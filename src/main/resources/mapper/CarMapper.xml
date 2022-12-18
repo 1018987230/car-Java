@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.CarMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.Car">
+        <id column="car_id" property="carId"/>
+        <result column="car_owner_phone" property="carOwnerPhone"/>
+        <result column="car_type" property="carType"/>
+        <result column="car_number" property="carNumber"/>
+        <result column="car_config_1" property="carConfig1"/>
+        <result column="car_config_2" property="carConfig2"/>
+        <result column="car_config_3" property="carConfig3"/>
+        <result column="car_config_4" property="carConfig4"/>
+        <result column="car_config_5" property="carConfig5"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.nft.entity.Car">
+        INSERT t_car (car_owner_phone,car_type,car_number,car_config_1,car_config_2,car_config_3,car_config_4,car_config_5)
+                    VALUES (#{carOwnerPhone},#{carType},#{carNumber},#{carConfig1},#{carConfig2},#{carConfig3},#{carConfig4},#{carConfig5})
+
+    </insert>
+
+    <delete id="deleteByNumber">
+        DELETE FROM t_car WHERE car_number = #{carNumber}
+    </delete>
+
+    <update id="updateByNumber" parameterType="com.example.nft.entity.Car" >
+        UPDATE t_car SET car_type=#{carType},car_number=#{carNumber},car_config_1=#{carConfig1},car_config_2=#{carConfig2},
+                         car_config_3=#{carConfig3},car_config_4=#{carConfig4},car_config_5=#{carConfig5}
+                    WHERE car_number=#{carNumber}
+    </update>
+
+
+
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        SELECT * FROM t_car WHERE car_owner_phone=#{carOwnerPhone} order by car_id desc
+    </select>
+
+    <select id="selectByNumber" resultMap="BaseResultMap">
+        SELECT * FROM t_car WHERE car_number=#{carNumber}
+    </select>
+
+    <select id="selectByStore" resultMap="BaseResultMap">
+        select * from t_car
+        where car_owner_phone
+                  in (select consumer_phone from t_consumer where consumer_uuid
+                                                                      in (select consumer_uuid from t_consumer_store where store_uuid = #{storeUuid})) order by create_time desc limit #{currentPage}, 20
+
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from t_car
+        where car_owner_phone
+                  in (select consumer_phone from t_consumer where consumer_uuid
+                                                                      in (select consumer_uuid from t_consumer_store where store_uuid = #{storeUuid}))
+
+    </select>
+
+
+
+
+</mapper>

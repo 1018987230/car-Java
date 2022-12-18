@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.ConsumerMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.Consumer">
+        <id column="consumer_id" property="consumerId"/>
+        <result column="consumer_uuid" property="consumerUuid"/>
+        <result column="consumer_salt" property="consumerSalt"/>
+        <result column="consumer_name" property="consumerName"/>
+        <result column="consumer_sex" property="consumerSex"/>
+        <result column="consumer_birthday" property="consumerBirthday"/>
+        <result column="consumer_level" property="consumerLevel"/>
+        <result column="consumer_phone" property="consumerPhone"/>
+        <result column="consumer_password" property="consumerPassword"/>
+        <result column="consumer_status" property="consumerStatus"/>
+        <result column="consumer_phone" property="consumerPhone"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+
+    <insert id="insert" parameterType="com.example.nft.entity.Consumer" >
+        insert into t_consumer (consumer_uuid, consumer_name,consumer_salt, consumer_phone,consumer_password)
+        values (#{consumerUuid},#{consumerName}, #{consumerSalt}, #{consumerPhone}, #{consumerPassword})
+    </insert>
+
+    <!--  设置用户状态  -->
+    <update id="statusByPhone" >
+        UPDATE t_consumer SET consumer_status=#{consumerStatus} WHERE consumer_phone=#{consumerPhone}
+    </update>
+
+    <!--  更新顾客信息  -->
+    <update id="updateByPhone" parameterType="com.example.nft.entity.Consumer" >
+        update t_consumer SET  consumer_name=#{consumerName}, consumer_sex=#{consumerSex}, consumer_birthday=#{consumerBirthday}
+                                where consumer_phone=#{consumerPhone} and consumer_status = '0'
+    </update>
+
+    <update id="updatePasswordByPhone" >
+        update t_consumer SET  consumer_password=#{consumerPassword}
+        where consumer_phone=#{consumerPhone} and consumer_status = '0'
+    </update>
+
+
+    <!--  单个查询by手机号  -->
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        select * from t_consumer where consumer_phone=#{consumerPhone} and consumer_status = '0'
+    </select>
+
+    <select id="selectByUuid" resultMap="BaseResultMap">
+        select * from t_consumer where consumer_uuid=#{consumerUuid} and consumer_status = '0'
+    </select>
+
+
+    <!--  顺序查询20个  -->
+    <select id="selectMany" resultMap="BaseResultMap">
+        select * from t_consumer  where  consumer_status = '0' order by consumer_id desc limit #{currentPage}, 20
+    </select>
+
+    <!--  查询总数  -->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from t_consumer WHERE consumer_status = '0'
+    </select>
+
+
+
+    <!--    被删除的顾客信息-->
+    <!--  单个查询by手机号  -->
+    <select id="selectByPhoneBan" resultMap="BaseResultMap">
+        select * from t_consumer where consumer_phone=#{consumerPhone} and consumer_status = '1'
+    </select>
+
+    <!--  顺序查询20个  -->
+    <select id="selectBanMany" resultMap="BaseResultMap">
+        select * from t_consumer  where consumer_status = '1' order by consumer_id desc limit #{currentPage}, 20
+    </select>
+
+
+
+
+
+</mapper>

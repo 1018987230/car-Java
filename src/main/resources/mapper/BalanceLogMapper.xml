@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.BalanceLogMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.BalanceLog">
+        <id column="balance_log_id" property="balanceLogId"/>
+        <result column="balance_log_store" property="balanceLogStore"/>
+        <result column="balance_log_phone" property="balanceLogPhone"/>
+        <result column="balance_log_money" property="balanceLogMoney"/>
+        <result column="balance_log_service1" property="balanceLogService1"/>
+        <result column="balance_log_service2" property="balanceLogService2"/>
+        <result column="balance_log_service3" property="balanceLogService3"/>
+        <result column="balance_log_service4" property="balanceLogService4"/>
+        <result column="balance_log_service5" property="balanceLogService5"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insertLog" >
+        insert t_balance_log (balance_log_phone,balance_log_store,balance_log_money,balance_log_service1,
+                                balance_log_service2,balance_log_service3,balance_log_service4,balance_log_service5)
+        values(#{balanceLogPhone},#{balanceLogStore},#{balanceLogMoney},#{balanceLogService1},#{balanceLogService2},
+        #{balanceLogService3},#{balanceLogService4},#{balanceLogService5})
+    </insert>
+
+
+    <select id="selectMany" resultMap="BaseResultMap">
+        select * from t_balance_log
+        <where>
+
+            <if test="startTime != null and startTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="balanceLogPhone != null and balanceLogPhone != '' ">
+                and balance_log_phone=#{balanceLogPhone}
+            </if>
+        </where>
+        order by balance_log_id desc limit #{currentPage}, 20
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from t_balance_log
+        <where>
+
+            <if test="startTime != null and startTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="balanceLogPhone != null and balanceLogPhone != '' ">
+                and balance_log_phone=#{balanceLogPhone}
+            </if>
+        </where>
+    </select>
+
+
+<!--    统计查询范围内每天的充值金额总数-->
+    <select id="moneyDayAddSum" resultType="map">
+        select sum(balance_log_money) as balanceLogMoney,day(create_time) as createTime from t_balance_log
+        <where>
+            balance_log_money >= 0
+            <if test="startTime != null and startTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
+            </if>
+        </where>
+        group by day(create_time);
+    </select>
+
+    <!--    统计查询范围内每天的充值服务总数-->
+    <select id="serviceDayAddSum" resultType="map">
+        select sum(balance_log_service1) as balanceLogService1, sum(balance_log_service2) as balanceLogService2,
+        sum(balance_log_service3) as balanceLogService3,sum(balance_log_service4) as balanceLogService4,
+        sum(balance_log_service5) as balanceLogService5,day(create_time) as createTime from t_balance_log
+        <where>
+            balance_log_money >= 0 and balance_log_service2 >= 0 and balance_log_service3 >= 0 and  balance_log_service4 >= 0
+            and balance_log_service5 >= 0
+            <if test="startTime != null and startTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
+            </if>
+        </where>
+        group by day(create_time);
+    </select>
+
+
+
+    <!--    统计查询范围内每天的支出金额总数 &lt; ：小于号；  &gt; : 大于号-->
+    <select id="moneyDayReduceSum" resultType="map">
+        select sum(balance_log_money) as balanceLogMoney,day(create_time) as createTime from t_balance_log
+        <where>
+            balance_log_money &lt;= 0
+            <if test="startTime != null and startTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
+            </if>
+        </where>
+
+        group by day(create_time);
+
+    </select>
+
+    <!--    统计查询范围内每天的消费服务总数-->
+    <select id="serviceDayReduceSum" resultType="map">
+        select sum(balance_log_service1) as balanceLogService1, sum(balance_log_service2) as balanceLogService2,
+        sum(balance_log_service3) as balanceLogService3,sum(balance_log_service4) as balanceLogService4,
+        sum(balance_log_service5) as balanceLogService5,day(create_time) as createTime from t_balance_log
+        <where>
+            balance_log_service1 &lt;= 0 and balance_log_service2 &lt;= 0 and balance_log_service3 &lt;= 0 and  balance_log_service4 &lt;= 0
+            and balance_log_service5 &lt;= 0
+            <if test="startTime != null and startTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') >= DATE_FORMAT(#{startTime},'%Y-%m-%d')]]>
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
+            </if>
+        </where>
+        group by day(create_time);
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

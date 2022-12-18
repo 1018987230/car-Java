@@ -1,0 +1,73 @@
+scp -r /home/wyx/下载/Car_VX/car_admin/target/NFT-0.0.1-SNAPSHOT.jar ssh root@120.76.176.54:/home/wyx/car
+
+
+2022-10-30
+    bug：
+        /api/consumerStore/add：重复插入异常未处理(结束)
+        /api/consumer/add: 添加用户时同事操作账号余额会出现问题(结束)
+        /api/store/findByName: 修改为模糊查询(结束)
+
+2022-11-05s
+    bug:
+        /api/consumerStore/add: 需要对传入的两个id进行存在判断，不然会报错
+        /api/consumerStore/add: 修改，需要进行短信验证码验证进行注册！暂时验证码为 “123456”
+    优化：
+        /api/consumer/add(register): 表结构更改，增加盐值 UUID.randomUUID().toString() (结束)
+
+2022-11-07
+    优化：
+        ConsumerServiceImpl.change: 优化了用户修改信息流程(结束)
+
+2022-11-08
+    优化：
+        consumerServiceImpl: 修改密码从updateByPhone中抽取出来(结束)
+    增加:
+        consumerServiceImpl.password/change: 修改密码接口(结束)
+
+2022-11-16
+    优化：
+        orderServiceImpl.changeStatus: 将消息通知功能嵌入（结束）
+
+2022-11-17
+    优化：
+        用户加入和退出店铺增加信息通知功能（结束）
+        用户加入或者退出店铺后，一个小时内不可再次操作
+    Bug：
+        修改用户信息，用户名为空的时候能通过！修改为不能通过(结束)
+
+2022-11-19
+    优化：
+        新增接口：根据手机号获取所属车牌和加入的店铺（结束）
+        错误返回信息修改更具体点（res.data.message）：方便用户更清楚知道问题所在
+        通知消息返回前端的数据优化，关于序号的全部改为具体对应的数据(结束)
+
+2022-11-21
+    优化：
+        订单请求体有问题: orderStoreId改为orderStoreName，但是在服务成处理时，查询数据库再改为id(结束)
+        增加店铺时，增加校验，不允许重名（结束）
+
+2022-11-27
+    增加：
+        操作员模块，增删改查（结束）
+    优化：
+        将操作员登录时的店铺uuid加入登录token中(取消)
+2022-12-03
+    优化：
+        对通知消息保存的内容进行了优化(结束)
+2022-12-04
+    优化：
+        consumer/findByPhone：返回值删除敏感信息
+        将id相关的全部改为uuid，（三端结束）
+2022-12-06
+    bug:
+        店铺在进行订单查询比用户多一个条件，1.根据参数是否携带店铺uuid进行判断，
+                                       2. 在数据库查询时判断storeUuid是否存在(结束)
+2022-12-07
+    新增：
+        完成车辆相关主页面设计编码
+2022-12-08
+    bug:
+        处理查询为空时总是报空指针(结束)
+2022-12-12
+    优化：
+        开始处理账户余额相关

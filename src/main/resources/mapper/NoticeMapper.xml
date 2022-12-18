@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.NoticeMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.Notice">
+        <id column="notice_id" property="noticeId"/>
+        <result column="notice_uuid" property="noticeUuid"/>
+        <result column="notice_from" property="noticeFrom"/>
+        <result column="notice_to" property="noticeTo"/>
+        <result column="notice_title" property="noticeTitle"/>
+        <result column="notice_content" property="noticeContent"/>
+        <result column="notice_status" property="noticeStatus"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+<!--  发起消息通知  -->
+    <insert id="insertNotice" parameterType="com.example.nft.entity.Notice">
+        insert into t_notice (notice_uuid,notice_from,notice_to,notice_title,notice_content)
+        values (#{noticeUuid},#{noticeFrom},#{noticeTo},#{noticeTitle},#{noticeContent})
+    </insert>
+
+    <update id="updateStatus">
+        update t_notice set notice_status=#{noticeStatus} where notice_uuid=#{noticeUuid}
+    </update>
+
+    <select id="selectByUuid" resultMap="BaseResultMap">
+        select * from t_notice where notice_uuid=#{noticeUuid}
+    </select>
+
+    <select id="selectByConsumerUuid" resultMap="BaseResultMap">
+        select * from t_notice where notice_from=#{consumerUuid} or notice_to=#{consumerUuid} order by create_time desc limit #{currentPage}, 20
+    </select>
+
+    <select  id="selectByStoreUuid" resultMap="BaseResultMap">
+        select * from t_notice where notice_from=#{storeUuid} or notice_to=#{storeUuid} order by create_time desc limit #{currentPage}, 20
+    </select>
+
+    <select id="selectConsumerChangeByStore" resultMap="BaseResultMap">
+        select * from t_notice where notice_to=#{storeUuid} and notice_title=#{noticeTitle} order by create_time desc limit #{currentPage}, 20
+    </select>
+
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from t_notice
+
+    </select>
+
+
+</mapper>

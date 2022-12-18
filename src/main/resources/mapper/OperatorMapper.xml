@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.OperatorMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.Operator">
+        <id column="operator_id" property="operatorId"/>
+        <result column="operator_belong" property="operatorBelong"/>
+        <result column="operator_level" property="operatorLevel"/>
+        <result column="operator_phone" property="operatorPhone"/>
+        <result column="operator_salt" property="operatorSalt"/>
+        <result column="operator_password" property="operatorPassword"/>
+        <result column="operator_name" property="operatorName"/>
+        <result column="operator_status" property="operatorStatus"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.nft.entity.Operator" >
+        INSERT t_operator (operator_belong,operator_level,operator_phone, operator_salt, operator_password, operator_name)
+                    VALUES (#{operatorBelong},#{operatorLevel},#{operatorPhone}, #{operatorSalt}, #{operatorPassword},#{operatorName})
+
+    </insert>
+
+    <select id="selectByPhoneAndUuid" resultMap="BaseResultMap">
+        SELECT * FROM t_operator WHERE operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone} and operator_status = 0
+    </select>
+
+    <update id="updateStatusByPhoneAndUuid">
+        update t_operator set operator_status=#{operatorStatus} where operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone} and operator_status = 0
+    </update>
+
+    <update id="updatePasswordByPhoneAndUuid">
+        update t_operator set operator_password=#{operatorPassword} where operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone} and operator_status = 0
+    </update>
+
+</mapper>

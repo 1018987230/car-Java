@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.ConsumerBalanceMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.ConsumerBalance">
+        <id column="balance_id" property="balanceId"/>
+        <result column="balance_store_uuid" property="balanceStoreUuid"/>
+        <result column="balance_owner_phone" property="balanceOwnerPhone"/>
+        <result column="balance_money" property="balanceMoney"/>
+        <result column="balance_service_1" property="balanceService1"/>
+        <result column="balance_service_2" property="balanceService2"/>
+        <result column="balance_service_3" property="balanceService3"/>
+        <result column="balance_service_4" property="balanceService4"/>
+        <result column="balance_service_5" property="balanceService5"/>
+        <result column="balance_status" property="balanceStatus"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        balance_store_uuid, balance_owner_phone, balance_money, balance_service_1, balance_service_2, balance_service_3, balance_service_4,
+        balance_service_5,create_time
+    </sql>
+
+
+    <insert id="insertBalance" parameterType="java.lang.String">
+        insert t_consumer_balance (balance_store_uuid,balance_owner_phone) values (#{storeUuid},#{balanceOwnerPhone})
+    </insert>
+
+
+    <!--设置余额状态-->
+    <update id="statusBalance" >
+        UPDATE t_consumer_balance SET balance_status=#{balanceStatus} WHERE balance_owner_phone=#{balanceOwnerPhone} and store_uuid = #{storeUuid}
+    </update>
+
+    <select id="selectByPhoneStore"  resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from t_consumer_balance where balance_owner_phone=#{consumerPhone} and balance_store_uuid=#{storeUuid} and balance_status = 0
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from t_consumer_balance where balance_store_uuid =#{storeUuid}
+    </select>
+
+    <select id="selectMany" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from t_consumer_balance where balance_store_uuid=#{storeUuid} order by balance_owner_phone desc limit #{currentPage}, 20
+    </select>
+
+    <update id="updateMoneyByPhone" parameterType="com.example.nft.entity.ConsumerBalance">
+        update t_consumer_balance SET  balance_money=#{balanceMoney} where balance_owner_phone=#{balanceOwnerPhone} and balance_store_uuid=#{storeUuid}
+    </update>
+
+    <update id="updateServiceByPhone">
+        update t_consumer_balance SET  balance_service_1=#{balanceService1},balance_service_2=#{balanceService2},
+                                      balance_service_3=#{balanceService3},balance_service_4=#{balanceService4},balance_service_5=#{balanceService5}
+        where balance_owner_phone=#{balanceOwnerPhone} and balance_store_uuid=#{storeUuid}
+    </update>
+
+    <update id="update">
+        update t_consumer_balance SET  balance_money=#{balanceMoney}, balance_service_1=#{balanceService1},balance_service_2=#{balanceService2},
+                                       balance_service_3=#{balanceService3},balance_service_4=#{balanceService4},balance_service_5=#{balanceService5}
+        where balance_owner_phone=#{balanceOwnerPhone} and balance_store_uuid = #{storeUuid}
+    </update>
+
+
+
+</mapper>

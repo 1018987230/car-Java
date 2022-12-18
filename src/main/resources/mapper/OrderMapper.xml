@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.Order">
+        <id column="order_id" property="orderId"/>
+        <result column="order_uuid" property="orderUuid"/>
+        <result column="order_consumer_uuid" property="orderConsumerUuid"/>
+        <result column="order_store_uuid" property="orderStoreUuid"/>
+        <result column="order_car_number" property="orderCarNumber"/>
+        <result column="order_service" property="orderService"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="order_note" property="orderNote"/>
+        <result column="order_preordain_time" property="orderPreordainTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insertOrder" parameterType="com.example.nft.entity.Order">
+        insert t_order (order_uuid,order_consumer_uuid,order_store_uuid,order_car_number,order_service,order_note,order_preordain_time)
+        values(#{orderUuid},#{orderConsumerUuid},#{orderStoreUuid},#{orderCarNumber},#{orderService},#{orderNote},#{orderPreordainTime})
+    </insert>
+
+    <update id="updateStatus">
+        update t_order SET order_status=#{orderStatus} where order_uuid=#{orderUuid}
+    </update>
+
+
+    <select id="selectByUuid" resultMap="BaseResultMap">
+        select * from t_order where order_uuid=#{orderUuid}
+    </select>
+
+    <select id="selectByConsumerUuid" resultMap="BaseResultMap">
+        select * from t_order where order_consumer_uuid=#{orderConsumerUuid}
+        <if test = "storeUuid !=null and storeUuid != '' ">
+            and order_store_uuid = #{storeUuid}
+        </if>
+        order by create_time desc limit #{currentPage},20
+    </select>
+
+
+    <select id="selectByStoreUuid" resultMap="BaseResultMap">
+        select * from t_order where order_store_uuid=#{orderStoreUuid} order by create_time desc limit #{currentPage},20
+    </select>
+
+    <select id="selectByCarNumber" resultMap="BaseResultMap">
+        select * from t_order where order_car_number=#{carNumber}
+        <if test = "storeUuid !=null and storeUuid != '' ">
+        and order_store_uuid = #{storeUuid}
+        </if>
+        order by create_time desc limit #{currentPage},20
+    </select>
+
+    <select id="selectByCarNumberStoreId" resultMap="BaseResultMap">
+        select * from t_order where order_car_number=#{carNumber} order by create_time desc limit #{currentPage},20
+    </select>
+
+
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from t_order where order_store_uuid=#{orderStoreUuid}
+    </select>
+
+
+</mapper>
