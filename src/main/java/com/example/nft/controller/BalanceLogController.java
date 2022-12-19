@@ -40,26 +40,26 @@ public class BalanceLogController extends BaseController {
      */
     @PostMapping("/dayAddSum")
     public Result dayAddSum(@RequestBody BalanceLogParam balanceLogParam){
-        Map result = balanceLogService.findDayAddSum(balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
+        Map result = balanceLogService.findDayAddSum(balanceLogParam.getBalanceLogStore(), balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
         return ResultGenerator.genSuccessResult(result);
     }
 
     @PostMapping("/dayReduceSum")
     public Result dayReduceSum(@RequestBody BalanceLogParam balanceLogParam){
-        Map result = balanceLogService.findDayReduceSum(balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
+        Map result = balanceLogService.findDayReduceSum(balanceLogParam.getBalanceLogStore(), balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
         return ResultGenerator.genSuccessResult(result);
     }
 
 
     @PostMapping("/dayServiceAddSum")
     public Result dayServiceAddSum(@RequestBody BalanceLogParam balanceLogParam){
-        Map result = balanceLogService.findServiceDayAddSum(balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
+        Map result = balanceLogService.findServiceDayAddSum( balanceLogParam.getBalanceLogStore(),balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
         return ResultGenerator.genSuccessResult(result);
     }
 
     @PostMapping("/dayServiceReduceSum")
     public Result dayServiceReduceSum(@RequestBody BalanceLogParam balanceLogParam){
-        Map result = balanceLogService.findServiceDayReduceSum(balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
+        Map result = balanceLogService.findServiceDayReduceSum(balanceLogParam.getBalanceLogStore(), balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
         return ResultGenerator.genSuccessResult(result);
     }
 

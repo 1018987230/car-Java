@@ -70,4 +70,7 @@ scp -r /home/wyx/下载/Car_VX/car_admin/target/NFT-0.0.1-SNAPSHOT.jar ssh root@
         处理查询为空时总是报空指针(结束)
 2022-12-12
     优化：
-        开始处理账户余额相关
+        开始处理账户余额相关（结束）
+2022-12-19
+    优化：
+        消费日志处理（结束）

@@ -34,8 +34,9 @@
                 <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
             </if>
             <if test="balanceLogPhone != null and balanceLogPhone != '' ">
-                and balance_log_phone=#{balanceLogPhone} and balance_log_store=#{balanceLogStore}
+                and balance_log_phone=#{balanceLogPhone}
             </if>
+            and balance_log_store=#{balanceLogStore}
         </where>
         order by create_time desc limit #{currentPage}, 20
     </select>
@@ -68,8 +69,8 @@
             <if test="endTime != null and endTime != '' ">
                 <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
             </if>
+            and balance_log_store=#{balanceLogStore}
         </where>
-        where balance_log_store=#{balanceLogStore}
         group by day(create_time)
 
     </select>

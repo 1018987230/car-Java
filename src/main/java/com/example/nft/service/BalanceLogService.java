@@ -20,11 +20,11 @@ public interface BalanceLogService {
                       Integer balanceLogService4,Integer balanceLogService5);
 
 
-    Map findDayAddSum(String startTime, String endTime);
+    Map findDayAddSum(String balanceLogStore, String startTime, String endTime);
 
-    Map findDayReduceSum(String startTime, String endTime);
+    Map findDayReduceSum(String balanceLogStore, String startTime, String endTime);
 
-    Map findServiceDayAddSum(String startTime, String endTime);
+    Map findServiceDayAddSum(String balanceLogStore, String startTime, String endTime);
 
-    Map findServiceDayReduceSum(String startTime, String endTime);
+    Map findServiceDayReduceSum(String balanceLogStore, String startTime, String endTime);
 }

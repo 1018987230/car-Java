@@ -37,7 +37,6 @@ public class BalanceLogServiceImpl implements BalanceLogService {
         Integer sum = balanceLogMapper.count(balanceLogPhone,balanceLogStore, startTime, endTime);
         map.put("info", info);
         map.put("sum", sum);
-
         return map;
     }
 
@@ -66,9 +65,8 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      * @param endTime
      * @return
      */
-    public Map findDayAddSum(String startTime, String endTime){
-        System.out.println(balanceLogMapper.moneyDayAddSum(startTime,endTime));
-        ArrayList<Map> dbRes = balanceLogMapper.moneyDayAddSum(startTime,endTime);
+    public Map findDayAddSum(String balanceLogStore, String startTime, String endTime){
+        ArrayList<Map> dbRes = balanceLogMapper.moneyDayAddSum(balanceLogStore, startTime,endTime);
         List<Object> balanceLogMoney = new ArrayList<>();
         List<Object> createTime = new ArrayList<>();
         HashMap<Object, Object> map = new HashMap<>();
@@ -87,7 +85,7 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      * @param endTime
      * @return
      */
-    public Map findDayReduceSum(String startTime, String endTime){
+    public Map findDayReduceSum(String balanceLogStore, String startTime, String endTime){
         System.out.println(balanceLogMapper.moneyDayReduceSum(startTime,endTime));
         ArrayList<Map> dbRes = balanceLogMapper.moneyDayReduceSum(startTime,endTime);
         List<Object> balanceLogMoney = new ArrayList<>();
@@ -103,14 +101,13 @@ public class BalanceLogServiceImpl implements BalanceLogService {
     }
 
 
-
     /**
      *  获取日期范围内充值的服务总数，也就是balanceLogService > 0的
      * @param startTime
      * @param endTime
      * @return
      */
-    public Map findServiceDayAddSum(String startTime, String endTime){
+    public Map findServiceDayAddSum(String balanceLogStore, String startTime, String endTime){
         System.out.println(balanceLogMapper.serviceDayAddSum(startTime,endTime));
         ArrayList<Map> dbRes = balanceLogMapper.serviceDayAddSum(startTime,endTime);
         List<Object> balanceLogService1 = new ArrayList<>();
@@ -136,13 +133,15 @@ public class BalanceLogServiceImpl implements BalanceLogService {
         map.put("createTime",createTime);
         return map;
     }
+
+
     /**
      *  获取日期范围内充值的服务总数，也就是balanceLogService 《》 0的
      * @param startTime
      * @param endTime
      * @return
      */
-    public Map findServiceDayReduceSum(String startTime, String endTime){
+    public Map findServiceDayReduceSum(String balanceLogStore, String startTime, String endTime){
         System.out.println(balanceLogMapper.serviceDayReduceSum(startTime,endTime));
         ArrayList<Map> dbRes = balanceLogMapper.serviceDayReduceSum(startTime,endTime);
         List<Object> balanceLogService1 = new ArrayList<>();

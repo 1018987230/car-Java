@@ -20,7 +20,7 @@ public interface BalanceLogMapper {
                       Integer balanceLogService1,Integer balanceLogService2,Integer balanceLogService3,
                       Integer balanceLogService4,Integer balanceLogService5);
 
-    ArrayList<Map> moneyDayAddSum(String startTime, String endTime);
+    ArrayList<Map> moneyDayAddSum(String balanceLogStore, String startTime, String endTime);
 
     ArrayList<Map> moneyDayReduceSum(String startTime, String endTime);
 
