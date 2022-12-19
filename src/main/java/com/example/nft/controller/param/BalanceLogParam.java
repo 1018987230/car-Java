@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class BalanceLogParam implements Serializable {
+
     private String balanceLogPhone;
 
     private String balanceLogStore;

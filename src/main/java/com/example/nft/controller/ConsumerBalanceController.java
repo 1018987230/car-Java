@@ -36,7 +36,6 @@ public class ConsumerBalanceController extends BaseController{
         System.out.println(balanceParam.getBalanceOwnerPhone());
         ConsumerBalance result = consumerBalanceService.serviceChange(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid(), balanceParam.getCostService1(), balanceParam.getCostService2(),
                 balanceParam.getCostService3(),balanceParam.getCostService4(),balanceParam.getCostService5());
-
         return ResultGenerator.genSuccessResult(result);
     }
 
@@ -59,6 +58,5 @@ public class ConsumerBalanceController extends BaseController{
                 balanceParam.getCostService3(),balanceParam.getCostService4(),balanceParam.getCostService5());
         return ResultGenerator.genSuccessResult(result);
     }
-
 
 }

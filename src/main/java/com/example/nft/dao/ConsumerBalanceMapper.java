@@ -17,7 +17,7 @@ public interface ConsumerBalanceMapper {
 
     Integer count(String storeUuid);
 
-    ConsumerBalance selectByPhoneStore(String consumerPhone, String storeUuid);
+    ConsumerBalance selectByPhoneStore(String storeUuid, String consumerPhone);
 
     Boolean update(String balanceOwnerPhone, String storeUuid, Integer balanceMoney, Integer balanceService1, Integer balanceService2,
                    Integer balanceService3, Integer balanceService4, Integer balanceService5);

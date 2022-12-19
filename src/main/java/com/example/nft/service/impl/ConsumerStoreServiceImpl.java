@@ -92,7 +92,6 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
 
         }
 
-
         logger.info("店铺和用户建立联系：" + "consumerId: " + consumerUuid + "storeId: " + storeUuid );
         return  ServiceResultEnum.SUCCESS.getResult();
     }

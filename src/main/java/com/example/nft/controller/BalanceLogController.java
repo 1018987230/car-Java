@@ -35,7 +35,6 @@ public class BalanceLogController extends BaseController {
 
 
     /**
-     *
      * @param balanceLogParam
      * @return
      */

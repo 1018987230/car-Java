@@ -40,7 +40,7 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
     @Override
     public String change(String balanceOwnerPhone, String storeUuid,Integer costMoney, Integer costService1, Integer costService2,
                           Integer costService3, Integer costService4, Integer costService5) {
-        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(balanceOwnerPhone,storeUuid);
+        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
         // 查找用户是否存在
         if(db_res == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
@@ -82,7 +82,7 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
     @Override
     public ConsumerBalance moneyChange(String balanceOwnerPhone, String storeUuid,Integer costMoney) {
         System.out.println(balanceOwnerPhone);
-        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(balanceOwnerPhone,storeUuid);
+        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
         // 查找用户是否存在
         if(db_res == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
@@ -100,14 +100,20 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
             throw new UpdateException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
         }
 
-        return consumerBalanceMapper.selectByPhoneStore(balanceOwnerPhone, storeUuid);
+        // 保存更新记录
+        if(!balanceLogMapper.insertLog(balanceOwnerPhone,storeUuid,costMoney,0,0,
+                0,0,0)){
+            throw new InsertException(ServiceResultEnum.DB_INSERT_LOG_ERROR.getResult());
+        }
+
+        return consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
     }
 
     @Override
     public ConsumerBalance serviceChange(String balanceOwnerPhone,String storeUuid, Integer costService1, Integer costService2,
                                 Integer costService3, Integer costService4, Integer costService5) {
         // 查找用户是否存在
-        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(balanceOwnerPhone,storeUuid);
+        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
         if(db_res == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
@@ -129,7 +135,13 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
                 balanceService3,balanceService4,balanceService5)){
             throw new UpdateException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
         }
-        return consumerBalanceMapper.selectByPhoneStore(balanceOwnerPhone,storeUuid);
+
+        // 保存更新记录
+        if(!balanceLogMapper.insertLog(balanceOwnerPhone,storeUuid,0,costService1,costService2,
+                costService3,costService4,costService5)){
+            throw new InsertException(ServiceResultEnum.DB_INSERT_LOG_ERROR.getResult());
+        }
+        return consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
     }
 
     /**
@@ -138,7 +150,7 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
      */
     @Override
     public ArrayList<Object> findOne(String balanceOwnerPhone, String storeUuid){
-        ConsumerBalance dbRes = consumerBalanceMapper.selectByPhoneStore(balanceOwnerPhone,storeUuid);
+        ConsumerBalance dbRes = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
         if(dbRes == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }

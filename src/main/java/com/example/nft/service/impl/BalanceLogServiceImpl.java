@@ -56,8 +56,6 @@ public class BalanceLogServiceImpl implements BalanceLogService {
     @Override
     public Boolean insertLog(String balanceLogPhone, String balanceLogStore , Integer balanceLogMoney, Integer balanceLogService1, Integer balanceLogService2, Integer balanceLogService3, Integer balanceLogService4, Integer balanceLogService5) {
 
-
-
         return null;
     }
 
