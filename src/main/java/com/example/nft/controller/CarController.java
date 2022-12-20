@@ -44,7 +44,6 @@ public class CarController extends BaseController{
     }
 
 
-
     @PostMapping("/findByNumber")
     public Result findByNumber(@RequestBody PageParam pageParam){
         Car result = carService.findByNumber(pageParam.getStoreUuid(), pageParam.getCarNumber());

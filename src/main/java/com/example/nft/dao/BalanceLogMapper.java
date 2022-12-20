@@ -22,10 +22,10 @@ public interface BalanceLogMapper {
 
     ArrayList<Map> moneyDayAddSum(String balanceLogStore, String startTime, String endTime);
 
-    ArrayList<Map> moneyDayReduceSum(String startTime, String endTime);
+    ArrayList<Map> moneyDayReduceSum(String balanceLogStore, String startTime, String endTime);
 
-    ArrayList<Map> serviceDayAddSum(String startTime, String endTime);
+    ArrayList<Map> serviceDayAddSum(String balanceLogStore, String startTime, String endTime);
 
-    ArrayList<Map> serviceDayReduceSum(String startTime, String endTime);
+    ArrayList<Map> serviceDayReduceSum(String balanceLogStore, String startTime, String endTime);
 
 }

@@ -30,9 +30,7 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      */
     @Override
     public HashMap<Object, Object> findMany(String balanceLogPhone, String balanceLogStore, String startTime, String endTime, Integer currentPage) {
-
         HashMap<Object, Object> map = new HashMap<>();
-
         List<BalanceLog> info = balanceLogMapper.selectMany( balanceLogPhone, balanceLogStore, startTime, endTime, (currentPage-1)*20);
         Integer sum = balanceLogMapper.count(balanceLogPhone,balanceLogStore, startTime, endTime);
         map.put("info", info);
@@ -53,8 +51,8 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      * @return
      */
     @Override
-    public Boolean insertLog(String balanceLogPhone, String balanceLogStore , Integer balanceLogMoney, Integer balanceLogService1, Integer balanceLogService2, Integer balanceLogService3, Integer balanceLogService4, Integer balanceLogService5) {
-
+    public Boolean insertLog(String balanceLogPhone, String balanceLogStore , Integer balanceLogMoney, Integer balanceLogService1,
+                             Integer balanceLogService2, Integer balanceLogService3, Integer balanceLogService4, Integer balanceLogService5) {
         return null;
     }
 
@@ -67,16 +65,7 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      */
     public Map findDayAddSum(String balanceLogStore, String startTime, String endTime){
         ArrayList<Map> dbRes = balanceLogMapper.moneyDayAddSum(balanceLogStore, startTime,endTime);
-        List<Object> balanceLogMoney = new ArrayList<>();
-        List<Object> createTime = new ArrayList<>();
-        HashMap<Object, Object> map = new HashMap<>();
-        for(int i = 0; i < dbRes.size(); i++){
-            balanceLogMoney.add(dbRes.get(i).get("balanceLogMoney"));
-            createTime.add(dbRes.get(i).get("createTime"));
-        }
-        map.put("balanceLogMoney",balanceLogMoney);
-        map.put("createTime",createTime);
-        return map;
+        return adjustMoney(dbRes);
     }
 
     /**
@@ -86,18 +75,8 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      * @return
      */
     public Map findDayReduceSum(String balanceLogStore, String startTime, String endTime){
-        System.out.println(balanceLogMapper.moneyDayReduceSum(startTime,endTime));
-        ArrayList<Map> dbRes = balanceLogMapper.moneyDayReduceSum(startTime,endTime);
-        List<Object> balanceLogMoney = new ArrayList<>();
-        List<Object> createTime = new ArrayList<>();
-        HashMap<Object, Object> map = new HashMap<>();
-        for(int i = 0; i < dbRes.size(); i++){
-            balanceLogMoney.add(dbRes.get(i).get("balanceLogMoney"));
-            createTime.add(dbRes.get(i).get("createTime"));
-        }
-        map.put("balanceLogMoney",balanceLogMoney);
-        map.put("createTime",createTime);
-        return map;
+        ArrayList<Map> dbRes = balanceLogMapper.moneyDayReduceSum(balanceLogStore, startTime, endTime);
+        return adjustMoney(dbRes);
     }
 
 
@@ -108,30 +87,8 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      * @return
      */
     public Map findServiceDayAddSum(String balanceLogStore, String startTime, String endTime){
-        System.out.println(balanceLogMapper.serviceDayAddSum(startTime,endTime));
-        ArrayList<Map> dbRes = balanceLogMapper.serviceDayAddSum(startTime,endTime);
-        List<Object> balanceLogService1 = new ArrayList<>();
-        List<Object> balanceLogService2 = new ArrayList<>();
-        List<Object> balanceLogService3 = new ArrayList<>();
-        List<Object> balanceLogService4 = new ArrayList<>();
-        List<Object> balanceLogService5 = new ArrayList<>();
-        List<Object> createTime = new ArrayList<>();
-        HashMap<Object, Object> map = new HashMap<>();
-        for(int i = 0; i < dbRes.size(); i++){
-            balanceLogService1.add(dbRes.get(i).get("balanceLogService1"));
-            balanceLogService2.add(dbRes.get(i).get("balanceLogService2"));
-            balanceLogService3.add(dbRes.get(i).get("balanceLogService3"));
-            balanceLogService4.add(dbRes.get(i).get("balanceLogService4"));
-            balanceLogService5.add(dbRes.get(i).get("balanceLogService5"));
-            createTime.add(dbRes.get(i).get("createTime"));
-        }
-        map.put("balanceLogService1",balanceLogService1);
-        map.put("balanceLogService2",balanceLogService2);
-        map.put("balanceLogService3",balanceLogService3);
-        map.put("balanceLogService4",balanceLogService4);
-        map.put("balanceLogService5",balanceLogService5);
-        map.put("createTime",createTime);
-        return map;
+        ArrayList<Map> dbRes = balanceLogMapper.serviceDayAddSum(balanceLogStore, startTime, endTime);
+        return adjustService(dbRes);
     }
 
 
@@ -142,8 +99,36 @@ public class BalanceLogServiceImpl implements BalanceLogService {
      * @return
      */
     public Map findServiceDayReduceSum(String balanceLogStore, String startTime, String endTime){
-        System.out.println(balanceLogMapper.serviceDayReduceSum(startTime,endTime));
-        ArrayList<Map> dbRes = balanceLogMapper.serviceDayReduceSum(startTime,endTime);
+        ArrayList<Map> dbRes = balanceLogMapper.serviceDayReduceSum(balanceLogStore, startTime, endTime);
+        return adjustService(dbRes);
+    }
+
+
+    /**
+     * 调整money结构，方便处理
+     * @param dbRes
+     * @return
+     */
+    public static HashMap<Object, Object> adjustMoney(ArrayList<Map> dbRes){
+        List<Object> balanceLogMoney = new ArrayList<>();
+        List<Object> createTime = new ArrayList<>();
+        HashMap<Object, Object> map = new HashMap<>();
+        for (Map dbRe : dbRes) {
+            balanceLogMoney.add(dbRe.get("balanceLogMoney"));
+            createTime.add(dbRe.get("createTime"));
+        }
+        map.put("balanceLogMoney",balanceLogMoney);
+        map.put("createTime",createTime);
+        return map;
+    }
+
+
+    /**
+     * 调整service结构，方便前端处理
+     * @param dbRes
+     * @return
+     */
+    public static HashMap<Object, Object> adjustService(ArrayList<Map> dbRes){
         List<Object> balanceLogService1 = new ArrayList<>();
         List<Object> balanceLogService2 = new ArrayList<>();
         List<Object> balanceLogService3 = new ArrayList<>();
@@ -151,13 +136,14 @@ public class BalanceLogServiceImpl implements BalanceLogService {
         List<Object> balanceLogService5 = new ArrayList<>();
         List<Object> createTime = new ArrayList<>();
         HashMap<Object, Object> map = new HashMap<>();
-        for(int i = 0; i < dbRes.size(); i++){
-            balanceLogService1.add(dbRes.get(i).get("balanceLogService1"));
-            balanceLogService2.add(dbRes.get(i).get("balanceLogService2"));
-            balanceLogService3.add(dbRes.get(i).get("balanceLogService3"));
-            balanceLogService4.add(dbRes.get(i).get("balanceLogService4"));
-            balanceLogService5.add(dbRes.get(i).get("balanceLogService5"));
-            createTime.add(dbRes.get(i).get("createTime"));
+        for (Map dbRe : dbRes) {
+            System.out.println(dbRe);
+            balanceLogService1.add(dbRe.get("balanceLogService1"));
+            balanceLogService2.add(dbRe.get("balanceLogService2"));
+            balanceLogService3.add(dbRe.get("balanceLogService3"));
+            balanceLogService4.add(dbRe.get("balanceLogService4"));
+            balanceLogService5.add(dbRe.get("balanceLogService5"));
+            createTime.add(dbRe.get("createTime"));
         }
         map.put("balanceLogService1",balanceLogService1);
         map.put("balanceLogService2",balanceLogService2);
@@ -166,6 +152,7 @@ public class BalanceLogServiceImpl implements BalanceLogService {
         map.put("balanceLogService5",balanceLogService5);
         map.put("createTime",createTime);
         return map;
+
     }
 
 }

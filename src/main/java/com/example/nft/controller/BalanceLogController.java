@@ -41,26 +41,23 @@ public class BalanceLogController extends BaseController {
     @PostMapping("/dayAddSum")
     public Result dayAddSum(@RequestBody BalanceLogParam balanceLogParam){
         Map result = balanceLogService.findDayAddSum(balanceLogParam.getBalanceLogStore(), balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
-        return ResultGenerator.genSuccessResult(result);
+        Map result2 = balanceLogService.findServiceDayAddSum( balanceLogParam.getBalanceLogStore(),balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("money", result);
+        map.put("service", result2);
+        return ResultGenerator.genSuccessResult(map);
     }
+
 
     @PostMapping("/dayReduceSum")
     public Result dayReduceSum(@RequestBody BalanceLogParam balanceLogParam){
         Map result = balanceLogService.findDayReduceSum(balanceLogParam.getBalanceLogStore(), balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
-        return ResultGenerator.genSuccessResult(result);
+        Map result2 = balanceLogService.findServiceDayReduceSum(balanceLogParam.getBalanceLogStore(), balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("money", result);
+        map.put("service", result2);
+        return ResultGenerator.genSuccessResult(map);
     }
 
-
-    @PostMapping("/dayServiceAddSum")
-    public Result dayServiceAddSum(@RequestBody BalanceLogParam balanceLogParam){
-        Map result = balanceLogService.findServiceDayAddSum( balanceLogParam.getBalanceLogStore(),balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
-        return ResultGenerator.genSuccessResult(result);
-    }
-
-    @PostMapping("/dayServiceReduceSum")
-    public Result dayServiceReduceSum(@RequestBody BalanceLogParam balanceLogParam){
-        Map result = balanceLogService.findServiceDayReduceSum(balanceLogParam.getBalanceLogStore(), balanceLogParam.getStartTime(),balanceLogParam.getEndTime());
-        return ResultGenerator.genSuccessResult(result);
-    }
 
 }

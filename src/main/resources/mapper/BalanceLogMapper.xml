@@ -36,7 +36,10 @@
             <if test="balanceLogPhone != null and balanceLogPhone != '' ">
                 and balance_log_phone=#{balanceLogPhone}
             </if>
-            and balance_log_store=#{balanceLogStore}
+            <if test="balanceLogStore != null and balanceLogStore != '' ">
+                and balance_log_store=#{balanceLogStore}
+            </if>
+
         </where>
         order by create_time desc limit #{currentPage}, 20
     </select>
@@ -69,7 +72,9 @@
             <if test="endTime != null and endTime != '' ">
                 <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
             </if>
-            and balance_log_store=#{balanceLogStore}
+            <if test="balanceLogStore != null and balanceLogStore != '' ">
+                and balance_log_store=#{balanceLogStore}
+            </if>
         </where>
         group by day(create_time)
 
@@ -89,10 +94,12 @@
             <if test="endTime != null and endTime != '' ">
                 <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
             </if>
+            <if test="balanceLogStore != null and balanceLogStore != '' ">
+                and balance_log_store=#{balanceLogStore}
+            </if>
         </where>
         group by day(create_time)
     </select>
-
 
 
     <!--    统计查询范围内每天的支出金额总数 &lt; ：小于号；  &gt; : 大于号-->
@@ -106,10 +113,11 @@
             <if test="endTime != null and endTime != '' ">
                 <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
             </if>
+            <if test="balanceLogStore != null and balanceLogStore != '' ">
+                and balance_log_store=#{balanceLogStore}
+            </if>
         </where>
-
-        group by day(create_time);
-
+        group by day(create_time)
     </select>
 
     <!--    统计查询范围内每天的消费服务总数-->
@@ -126,18 +134,12 @@
             <if test="endTime != null and endTime != '' ">
                 <![CDATA[and DATE_FORMAT(create_time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime},'%Y-%m-%d')]]>
             </if>
+            <if test="balanceLogStore != null and balanceLogStore != '' ">
+                and balance_log_store=#{balanceLogStore}
+            </if>
         </where>
-        group by day(create_time);
+        group by day(create_time)
     </select>
-
-
-
-
-
-
-
-
-
 
 
 </mapper>

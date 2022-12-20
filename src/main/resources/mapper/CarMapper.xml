@@ -15,11 +15,13 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
 
+
     <insert id="insert" parameterType="com.example.nft.entity.Car">
         INSERT t_car (car_owner_phone,car_type,car_number,car_config_1,car_config_2,car_config_3,car_config_4,car_config_5)
                     VALUES (#{carOwnerPhone},#{carType},#{carNumber},#{carConfig1},#{carConfig2},#{carConfig3},#{carConfig4},#{carConfig5})
 
     </insert>
+
 
     <delete id="deleteByNumber">
         DELETE FROM t_car WHERE car_number = #{carNumber}
@@ -32,7 +34,6 @@
     </update>
 
 
-
     <select id="selectByPhone" resultMap="BaseResultMap">
         SELECT * FROM t_car WHERE car_owner_phone=#{carOwnerPhone} order by car_id desc
     </select>
@@ -41,23 +42,21 @@
         SELECT * FROM t_car WHERE car_number=#{carNumber}
     </select>
 
+
     <select id="selectByStore" resultMap="BaseResultMap">
         select * from t_car
         where car_owner_phone
                   in (select consumer_phone from t_consumer where consumer_uuid
                                                                       in (select consumer_uuid from t_consumer_store where store_uuid = #{storeUuid})) order by create_time desc limit #{currentPage}, 20
-
     </select>
+
 
     <select id="selectCount" resultType="java.lang.Integer">
         select count(*) from t_car
         where car_owner_phone
                   in (select consumer_phone from t_consumer where consumer_uuid
                                                                       in (select consumer_uuid from t_consumer_store where store_uuid = #{storeUuid}))
-
     </select>
-
-
 
 
 </mapper>
