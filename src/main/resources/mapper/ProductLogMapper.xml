@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.ProductLogMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.ProductLog">
+        <id column="store_id" property="storeId"/>
+        <result column="store_uuid" property="storeUuid"/>
+        <result column="store_name" property="storeName"/>
+        <result column="store_owner" property="storeOwner"/>
+        <result column="store_phone" property="storePhone"/>
+        <result column="store_address" property="storeAddress"/>
+        <result column="store_business_scope" property="storeBusinessScope"/>
+        <result column="store_remark" property="storeRemark"/>
+        <result column="store_status" property="storeStatus"/>
+        <result column="create_time" property="createTime"/>
+
+    </resultMap>
+
+    <!--    -->
+    <insert id="insert" parameterType="com.example.nft.entity.Store">
+        insert t_store (store_uuid,store_name, store_owner, store_phone, store_address, store_business_scope,store_remark)
+                values (#{storeUuid}, #{storeName}, #{storeOwner}, #{storePhone}, #{storeAddress}, #{storeBusinessScope},#{storeRemark});
+
+    </insert>
+
+    <!--    查询所有店铺-->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from t_store;
+    </select>
+
+    <select id="selectByUuid" resultMap="BaseResultMap">
+        select * from t_store where store_uuid = #{storeUuid} and  store_status = 0;
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from t_store where store_id = #{selectById} and  store_status = 0;
+    </select>
+
+    <!--    根据店铺名查询-->
+    <select id="selectStoreByName" resultMap="BaseResultMap">
+        select * from t_store where store_name like concat('%',#{storeName},'%') and  store_status = 0 ;
+    </select>
+</mapper>

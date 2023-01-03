@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.Product">
+        <id column="product_id" property="productId"/>
+        <result column="store_uuid" property="storeUuid"/>
+        <result column="product_uuid" property="productUuid"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_quantity" property="productQuantity"/>
+        <result column="product_unit" property="productUnit"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="product_in" property="productIn"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.nft.entity.Product">
+        insert t_product (storeUuid,productUuid,productName,productQuantity,productUnit,productPrice,productIn)
+            values(store_uuid,product_uuid,product_name,product_quantity,product_unit,product_price,product_in)
+    </insert>
+
+    <update id="updateInfoByUuid">
+        update t_product set
+    </update>
+
+</mapper>
+

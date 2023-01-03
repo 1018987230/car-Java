@@ -187,7 +187,6 @@ CREATE TABLE `t_product_log`(
     `product_log_unit` varchar(30) NOT NULL COMMENT '产品单位',
     `product_log_price` float(9,2) NOT NULL COMMENT '产品价格',
     `product_log_type` varchar(30) NOT NULL COMMENT '增加or消耗',
-    `product_log_in` varchar(30) COMMENT '产品供应商',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`product_log_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
