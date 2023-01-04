@@ -12,14 +12,15 @@ import lombok.Data;
 @Data
 public class Product {
 
-    private  Integer productId;
-    private  String storeUuid;
-    private  String productUuid;
-    private  String productName;
-    private  Integer productQuantity;
-    private  String productUnit;
-    private  Float productPrice;
-    private  String productIn;
-    private  String createTime;
+    private Integer productId;
+    private String storeUuid;
+    private String productUuid;
+    private String productName;
+    private Integer productQuantity;
+    private String productUnit;
+    private Float productPrice;
+    private String productIn;
+    private Integer productStatus;
+    private String createTime;
 
 }

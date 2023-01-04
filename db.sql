@@ -172,6 +172,7 @@ CREATE TABLE `t_product`(
     `product_unit` varchar(30) NOT NULL COMMENT '产品单位',
     `product_price` float(9,2) NOT NULL COMMENT '产品价格',
     `product_in` varchar(30) COMMENT '产品供应商',
+    `product_status` int NOT NULL DEFAULT 0 COMMENT '状态为0正常，1删除',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`product_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
@@ -181,12 +182,12 @@ CREATE TABLE `t_product`(
 CREATE TABLE `t_product_log`(
     `product_log_id` int NOT NULL AUTO_INCREMENT COMMENT '序号',
     `store_uuid` varchar (30) NOT NULL  COMMENT '绑定的店铺id',
-    `product_log_uuid` varchar(30) NOT NULL  COMMENT '唯一编号',
+    `product_log_uuid` varchar(30) NOT NULL  COMMENT '产品唯一编号',
     `product_log_name` varchar(30) NOT NULL COMMENT '产品名称',
     `product_log_quantity` int NOT NULL COMMENT '产品数量',
     `product_log_unit` varchar(30) NOT NULL COMMENT '产品单位',
     `product_log_price` float(9,2) NOT NULL COMMENT '产品价格',
-    `product_log_type` varchar(30) NOT NULL COMMENT '增加or消耗',
+    `product_log_type` varchar(30) NOT NULL COMMENT '增加or消耗or新增',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`product_log_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;

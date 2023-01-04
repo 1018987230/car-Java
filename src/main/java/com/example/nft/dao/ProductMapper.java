@@ -35,7 +35,17 @@ public interface ProductMapper {
      * @param productQuantity
      * @return
      */
-    Integer updateByQuantity(String productUuid, Integer productQuantity);
+    Integer updateQuantityByUuid(String productUuid, Integer productQuantity);
+
+
+    /**
+     * 修改产品状态
+     * @param productUuid
+     * @param productStatus
+     * @return
+     */
+    Integer updateStatusByUuid(String productUuid, Integer productStatus);
+
 
     /**
      *  分页查询店铺下的原材料列表

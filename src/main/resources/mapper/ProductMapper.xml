@@ -11,8 +11,13 @@
         <result column="product_unit" property="productUnit"/>
         <result column="product_price" property="productPrice"/>
         <result column="product_in" property="productIn"/>
+        <result column="product_status" property="productStatus"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
+
+    <sql id="Base_List">
+        store_uuid, product_uuid, product_name, product_quantity, product_unit, product_price, product_in,create_time
+    </sql>
 
     <insert id="insert" parameterType="com.example.nft.entity.Product">
         insert t_product (storeUuid,productUuid,productName,productQuantity,productUnit,productPrice,productIn)
@@ -20,8 +25,51 @@
     </insert>
 
     <update id="updateInfoByUuid">
-        update t_product set
+        update t_product
+        <set>
+            <if test="product_name != null">
+                product_name=#{productName}
+            </if>
+            <if test="product_unit != null">
+                product_unit=#{productUnit}
+            </if>
+            <if test="product_price != null">
+                product_price=#{productPrice}
+            </if>
+            <if test="product_in != null">
+                product_in=#{productIn}
+            </if>
+        </set>
+        where store_uuid=#{storeUuid}
     </update>
+
+    <update id="updateQuantityByUuid">
+        update t_product set product_unit=#{productUnit} where store_uuid=#{storeUuid}
+    </update>
+
+    <update id="updateStatusByUuid">
+        update t_product set product_status=#{productStatus}
+    </update>
+
+    <select id="selectByStore">
+        select <include refid="Base_List"/> from t_product
+        where store_uuid=#{storeUuid} and product_status='0'
+        order by create_time
+        desc limit #{currentPage}, 20
+    </select>
+
+    <select id="selectByName">
+        select <include refid="Base_List"/> from t_product
+        where product_name like concat('%',#{productName},'%') and product_status='0'
+        order by create_time
+        desc limit #{currentPage}, 20
+    </select>
+
+    <select id="selectByUuid">
+        select <include refid="Base_List"/> from t_product
+        where product_uuid=#{productUuid} and product_status='0'
+    </select>
+
 
 </mapper>
 

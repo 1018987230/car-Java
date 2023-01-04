@@ -3,40 +3,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.nft.dao.ProductLogMapper">
     <resultMap id="BaseResultMap" type="com.example.nft.entity.ProductLog">
-        <id column="store_id" property="storeId"/>
+        <id column="product_log_id" property="productLogId"/>
         <result column="store_uuid" property="storeUuid"/>
-        <result column="store_name" property="storeName"/>
-        <result column="store_owner" property="storeOwner"/>
-        <result column="store_phone" property="storePhone"/>
-        <result column="store_address" property="storeAddress"/>
-        <result column="store_business_scope" property="storeBusinessScope"/>
-        <result column="store_remark" property="storeRemark"/>
-        <result column="store_status" property="storeStatus"/>
+        <result column="product_log_uuid" property="productLogUuid"/>
+        <result column="product_log_name" property="productLogName"/>
+        <result column="product_log_quantity" property="productLogQuantity"/>
+        <result column="product_log_unit" property="productLogUnit"/>
+        <result column="product_log_price" property="productLogPrice"/>
+        <result column="product_log_type" property="productLogType"/>
         <result column="create_time" property="createTime"/>
-
     </resultMap>
 
+    <sql id="Base_List">
+        store_uuid,product_log_uuid,product_log_name,product_log_quantity,product_log_unit,product_log_price,product_log_type,create_time
+    </sql>
+
     <!--    -->
-    <insert id="insert" parameterType="com.example.nft.entity.Store">
-        insert t_store (store_uuid,store_name, store_owner, store_phone, store_address, store_business_scope,store_remark)
-                values (#{storeUuid}, #{storeName}, #{storeOwner}, #{storePhone}, #{storeAddress}, #{storeBusinessScope},#{storeRemark});
+    <insert id="insert" parameterType="com.example.nft.entity.ProductLog">
+        insert t_store (store_uuid,product_log_uuid, product_log_name, product_log_quantity, product_log_unit, product_log_price,product_log_type)
+                values (#{storeUuid}, #{productLogUuid}, #{productLogName}, #{productLogQuantity}, #{productLogUnit}, #{productLogPrice},#{productLogType});
 
     </insert>
 
-    <!--    查询所有店铺-->
-    <select id="selectAll" resultMap="BaseResultMap">
-        select * from t_store;
+    <select id="selectByStore">
+        select <include refid="Base_List"></include>
+        where store_uuid=#{storeUuid}
+        order by create_time
+        desc limit #{currentPage}, 20
     </select>
 
-    <select id="selectByUuid" resultMap="BaseResultMap">
-        select * from t_store where store_uuid = #{storeUuid} and  store_status = 0;
-    </select>
-    <select id="selectById" resultMap="BaseResultMap">
-        select * from t_store where store_id = #{selectById} and  store_status = 0;
+    <select id="selectByUuid">
+        select <include refid="Base_List"></include>
+        where store_uuid=#{storeUuid} and product_log_uuid=#{productLogUuid}
+        order by create_time
+        desc limit #{currentPage}, 20
     </select>
 
-    <!--    根据店铺名查询-->
-    <select id="selectStoreByName" resultMap="BaseResultMap">
-        select * from t_store where store_name like concat('%',#{storeName},'%') and  store_status = 0 ;
+    <select id="selectByName">
+        select <include refid="Base_List"></include>
+        where store_uuid=#{storeUuid} and product_name=#{productName}
+        order by create_time
+        desc limit #{currentPage}, 20
     </select>
+
+
 </mapper>
