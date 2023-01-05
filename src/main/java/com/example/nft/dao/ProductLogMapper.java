@@ -1,6 +1,7 @@
 package com.example.nft.dao;
 
 import com.example.nft.entity.ProductLog;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @modified By：
  * @version: $
  */
+@Mapper
 public interface ProductLogMapper {
 
     /**

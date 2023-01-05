@@ -60,7 +60,7 @@
 
     <select id="selectByName">
         select <include refid="Base_List"/> from t_product
-        where product_name like concat('%',#{productName},'%') and product_status='0'
+        where product_name like concat('%',#{productName},'%') and store_uuid=#{storeUuid} and product_status='0'
         order by create_time
         desc limit #{currentPage}, 20
     </select>

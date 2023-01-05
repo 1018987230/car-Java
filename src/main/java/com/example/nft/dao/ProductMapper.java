@@ -1,6 +1,7 @@
 package com.example.nft.dao;
 
 import com.example.nft.entity.Product;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @modified By：
  * @version: $
  */
+@Mapper
 public interface ProductMapper {
 
     /**
@@ -55,13 +57,14 @@ public interface ProductMapper {
      */
     List<Product> selectByStore(String storeUuid, Integer currentPage);
 
+
     /**
      * 根据产品名模糊查询
      * @param storeUuid
      * @param productName
      * @return
      */
-    List<Product> selectByName(String storeUuid, String productName);
+    List<Product> selectByName(String storeUuid, String productName, Integer currentPage);
 
 
     /**

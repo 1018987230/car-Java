@@ -41,7 +41,7 @@
 
     <select id="selectByName">
         select <include refid="Base_List"></include>
-        where store_uuid=#{storeUuid} and product_name=#{productName}
+        where store_uuid=#{storeUuid} and product_log_name like concat('%',#{productLogName},'%')
         order by create_time
         desc limit #{currentPage}, 20
     </select>
