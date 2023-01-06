@@ -51,9 +51,14 @@
         update t_product set product_status=#{productStatus}
     </update>
 
-    <select id="selectByStore">
+    <select id="selectMany">
         select <include refid="Base_List"/> from t_product
-        where store_uuid=#{storeUuid} and product_status='0'
+        <where>
+            <if test="product_name != null">
+                product_name like concat('%',#{productName},'%')
+            </if>
+        </where>
+        and store_uuid=#{storeUuid} and product_status='0'
         order by create_time
         desc limit #{currentPage}, 20
     </select>

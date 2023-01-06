@@ -55,7 +55,7 @@ public interface ProductMapper {
      * @param currentPage
      * @return
      */
-    List<Product> selectByStore(String storeUuid, Integer currentPage);
+    List<Product> selectMany(String storeUuid, String productName, Integer currentPage);
 
 
     /**
@@ -69,11 +69,11 @@ public interface ProductMapper {
 
     /**
      * 根据产品uuid精确查找
-     * @param storeUuid
+     * @param
      * @param productUuid
      * @return
      */
-    Product selectByUuid(String storeUuid, String productUuid);
+    Product selectByUuid(String productUuid);
 
 
 

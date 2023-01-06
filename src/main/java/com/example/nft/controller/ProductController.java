@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/product")
 public class ProductController {
 
+    /**
+     * 增加产品接口
+     * @param product
+     * @return
+     */
     @PostMapping("/add")
     public Result add(@RequestBody Product product){
 
