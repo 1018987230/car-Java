@@ -5,45 +5,47 @@
     <resultMap id="BaseResultMap" type="com.example.nft.entity.ProductLog">
         <id column="product_log_id" property="productLogId"/>
         <result column="store_uuid" property="storeUuid"/>
-        <result column="product_log_uuid" property="productLogUuid"/>
-        <result column="product_log_name" property="productLogName"/>
+        <result column="product_uuid" property="productUuid"/>
+        <result column="product_name" property="productName"/>
         <result column="product_log_quantity" property="productLogQuantity"/>
-        <result column="product_log_unit" property="productLogUnit"/>
+        <result column="product_unit" property="productUnit"/>
         <result column="product_log_price" property="productLogPrice"/>
         <result column="product_log_type" property="productLogType"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
 
     <sql id="Base_List">
-        store_uuid,product_log_uuid,product_log_name,product_log_quantity,product_log_unit,product_log_price,product_log_type,create_time
+        store_uuid,product_uuid,product_name,product_log_quantity,product_unit,product_log_price,product_log_type,create_time
     </sql>
 
     <!--    -->
     <insert id="insert" parameterType="com.example.nft.entity.ProductLog">
-        insert t_store (store_uuid,product_log_uuid, product_log_name, product_log_quantity, product_log_unit, product_log_price,product_log_type)
-                values (#{storeUuid}, #{productLogUuid}, #{productLogName}, #{productLogQuantity}, #{productLogUnit}, #{productLogPrice},#{productLogType});
+        insert t_product_log (store_uuid,product_uuid, product_name, product_log_quantity, product_unit, product_log_price,product_log_type)
+                values (#{storeUuid}, #{productUuid}, #{productName}, #{productLogQuantity}, #{productUnit}, #{productLogPrice},#{productLogType});
 
     </insert>
 
-    <select id="selectByStore">
-        select <include refid="Base_List"></include>
-        where store_uuid=#{storeUuid}
+    <select id="selectMany" resultMap="BaseResultMap">
+        select <include refid="Base_List"></include> from t_product_log
+        <where>
+            <if test="productName != null and productName != ''">
+                product_name like concat('%',#{productName},'%')
+            </if>
+
+        </where>
         order by create_time
         desc limit #{currentPage}, 20
     </select>
 
-    <select id="selectByUuid">
-        select <include refid="Base_List"></include>
-        where store_uuid=#{storeUuid} and product_log_uuid=#{productLogUuid}
-        order by create_time
-        desc limit #{currentPage}, 20
-    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from t_product_log
+        <where>
+            <if test="productName != null and productName != ''">
+                product_name like concat('%',#{productName},'%')
+            </if>
+        </where>
 
-    <select id="selectByName">
-        select <include refid="Base_List"></include>
-        where store_uuid=#{storeUuid} and product_log_name like concat('%',#{productLogName},'%')
-        order by create_time
-        desc limit #{currentPage}, 20
+
     </select>
 
 

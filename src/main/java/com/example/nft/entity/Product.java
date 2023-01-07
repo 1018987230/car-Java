@@ -18,7 +18,7 @@ public class Product {
     private String productName;
     private Integer productQuantity;
     private String productUnit;
-    private Float productPrice;
+    private Integer productPrice;
     private String productIn;
     private Integer productStatus;
     private String createTime;

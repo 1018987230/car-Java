@@ -7,12 +7,12 @@ import lombok.Data;
 public class ProductLog {
 
     private String storeUuid;
-    private String productLogUuid;
-    private String productLogName;
+    private String productUuid;
+    private String productName;
     private Integer productLogQuantity;
-    private String productLogUnit;
-    private Float productLogPrice;
-    private String productLogType;
+    private String productUnit;
+    private Integer productLogPrice;
+    private Integer productLogType;
     private String createTime;
 
 }

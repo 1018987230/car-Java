@@ -3,6 +3,7 @@ package com.example.nft.service;
 import com.example.nft.entity.Product;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public interface ProductService {
      * @param currentPage
      * @return
      */
-    List<Product> findMany(String storeUuid, String productName,Integer currentPage);
+    HashMap<String, Object> findMany(String storeUuid, String productName, Integer currentPage);
 
     /**
      * 根据产品uuid查询

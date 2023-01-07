@@ -20,57 +20,60 @@
     </sql>
 
     <insert id="insert" parameterType="com.example.nft.entity.Product">
-        insert t_product (storeUuid,productUuid,productName,productQuantity,productUnit,productPrice,productIn)
-            values(store_uuid,product_uuid,product_name,product_quantity,product_unit,product_price,product_in)
+        insert t_product (store_uuid,product_uuid,product_name,product_quantity,product_unit,product_price,product_in)
+            values(#{storeUuid},#{productUuid},#{productName},#{productQuantity},#{productUnit},#{productPrice},#{productIn})
     </insert>
 
     <update id="updateInfoByUuid">
         update t_product
         <set>
-            <if test="product_name != null">
+            <if test="productName != null and productName != '' ">
                 product_name=#{productName}
             </if>
-            <if test="product_unit != null">
-                product_unit=#{productUnit}
+            <if test="productUnit != null">
+                , product_unit=#{productUnit}
             </if>
-            <if test="product_price != null">
-                product_price=#{productPrice}
+            <if test="productPrice != null">
+                , product_price=#{productPrice}
             </if>
-            <if test="product_in != null">
-                product_in=#{productIn}
+            <if test="productIn != null">
+                , product_in=#{productIn}
             </if>
         </set>
-        where store_uuid=#{storeUuid}
+        where product_uuid=#{productUuid}
     </update>
 
     <update id="updateQuantityByUuid">
-        update t_product set product_unit=#{productUnit} where store_uuid=#{storeUuid}
+        update t_product set product_quantity=#{productQuantity} where product_uuid=#{productUuid}
     </update>
 
     <update id="updateStatusByUuid">
-        update t_product set product_status=#{productStatus}
+        update t_product set product_status=#{productStatus} where product_uuid=#{productUuid}
     </update>
 
-    <select id="selectMany">
+    <select id="selectMany" resultMap="BaseResultMap">
         select <include refid="Base_List"/> from t_product
         <where>
-            <if test="product_name != null">
-                product_name like concat('%',#{productName},'%')
+            <if test="productName != null and productName != ''">
+                product_name like concat('%',#{productName},'%') and
             </if>
+            store_uuid=#{storeUuid} and product_status='0'
         </where>
-        and store_uuid=#{storeUuid} and product_status='0'
-        order by create_time
-        desc limit #{currentPage}, 20
+        order by create_time desc
+        limit #{currentPage}, 20
     </select>
 
-    <select id="selectByName">
-        select <include refid="Base_List"/> from t_product
-        where product_name like concat('%',#{productName},'%') and store_uuid=#{storeUuid} and product_status='0'
-        order by create_time
-        desc limit #{currentPage}, 20
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from t_product
+        <where>
+            <if test="productName != null and productName != ''">
+                product_name like concat('%',#{productName},'%') and
+            </if>
+            store_uuid=#{storeUuid} and product_status='0'
+        </where>
     </select>
 
-    <select id="selectByUuid">
+    <select id="selectByUuid" resultMap="BaseResultMap">
         select <include refid="Base_List"/> from t_product
         where product_uuid=#{productUuid} and product_status='0'
     </select>

@@ -170,7 +170,7 @@ CREATE TABLE `t_product`(
     `product_name` varchar(30) NOT NULL COMMENT '产品名称',
     `product_quantity` int NOT NULL COMMENT '产品数量',
     `product_unit` varchar(30) NOT NULL COMMENT '产品单位',
-    `product_price` float(9,2) NOT NULL COMMENT '产品价格',
+    `product_price` int NOT NULL COMMENT '产品价格(单位：分)',
     `product_in` varchar(30) COMMENT '产品供应商',
     `product_status` int NOT NULL DEFAULT 0 COMMENT '状态为0正常，1删除',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -182,12 +182,12 @@ CREATE TABLE `t_product`(
 CREATE TABLE `t_product_log`(
     `product_log_id` int NOT NULL AUTO_INCREMENT COMMENT '序号',
     `store_uuid` varchar (30) NOT NULL  COMMENT '绑定的店铺id',
-    `product_log_uuid` varchar(30) NOT NULL  COMMENT '产品唯一编号',
-    `product_log_name` varchar(30) NOT NULL COMMENT '产品名称',
+    `product_uuid` varchar(30) NOT NULL  COMMENT '产品唯一编号',
+    `product_name` varchar(30) NOT NULL COMMENT '产品名称',
     `product_log_quantity` int NOT NULL COMMENT '产品数量',
-    `product_log_unit` varchar(30) NOT NULL COMMENT '产品单位',
-    `product_log_price` float(9,2) NOT NULL COMMENT '产品价格',
-    `product_log_type` varchar(30) NOT NULL COMMENT '增加or消耗or新增',
+    `product_unit` varchar(30) NOT NULL COMMENT '产品单位',
+    `product_log_price` int NOT NULL COMMENT '产品价格(单位分)',
+    `product_log_type` int NOT NULL DEFAULT 0 COMMENT '0:新增，1：增加，2：减少，3：删除',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`product_log_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;

@@ -23,6 +23,10 @@ public class PageParam implements Serializable {
 
     private String noticeUuid;
 
+    private String productUuid;
+
+    private String productName;
+
     private String carNumber;
 
     private Integer currentPage;

@@ -20,7 +20,7 @@ public interface ProductMapper {
      * @param product
      * @return
      */
-    Integer insert( Product product);
+    Boolean insert(Product product);
 
     /**
      * 更改产品非重要信息，(不更改数量)
@@ -28,7 +28,7 @@ public interface ProductMapper {
      * @param
      * @return
      */
-    Integer updateInfoByUuid(String productUuid, String productName, Float productPrice,String productUnit, String productIn);
+    Integer updateInfoByUuid(String productUuid, String productName, Integer productPrice,String productUnit, String productIn);
 
 
     /**
@@ -59,12 +59,12 @@ public interface ProductMapper {
 
 
     /**
-     * 根据产品名模糊查询
+     * 查询数量
      * @param storeUuid
      * @param productName
      * @return
      */
-    List<Product> selectByName(String storeUuid, String productName, Integer currentPage);
+    Integer selectCount(String storeUuid, String productName, Integer currentPage);
 
 
     /**

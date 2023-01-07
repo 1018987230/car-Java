@@ -23,28 +23,16 @@ public interface ProductLogMapper {
     Integer insert(ProductLog productLog);
 
 
-    /**
-     * 分页查询店铺的产品记录
-     * @param storeUuid
-     * @param currentPage
-     * @return
-     */
-    List<ProductLog> selectByStore(String storeUuid, Integer currentPage);
 
     /**
      * 根据产品的uuid查询记录
      * @param storeUuid
-     * @param productLogUuid
+     * @param
      * @return
      */
-    List<ProductLog> selectByUuid(String storeUuid, String productLogUuid, Integer currentPage);
+    List<ProductLog> selectMany(String storeUuid, String productUuid, String productName, Integer currentPage);
+    Integer selectCount(String storeUuid, String productUuid, String productName);
 
 
-    /**
-     * 根据产品的名字查询记录
-     * @param storeUuid
-     * @param productLogName
-     * @return
-     */
-    List<ProductLog> selectByName(String storeUuid, String productLogName, Integer currentPage);
+
 }
