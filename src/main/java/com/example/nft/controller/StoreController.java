@@ -7,6 +7,9 @@ import com.example.nft.entity.Store;
 import com.example.nft.service.StoreService;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +20,8 @@ import java.util.List;
 
 @RequestMapping("/api/store")
 @RestController
-public class StoreController extends BaseController{
+@Api(tags = "2.店铺模块")
+public class StoreController extends BaseController {
 
     @Resource
     private StoreService storeService;
@@ -25,23 +29,26 @@ public class StoreController extends BaseController{
 
     /**
      * 添加店铺的接口
+     *
      * @param store
      * @return
      */
     @PostMapping("/add")
-    public Result addStore(@RequestBody Store store){
+    @ApiOperation(value="添加店铺")
+    public Result addStore(@RequestBody Store store) {
         Boolean result = storeService.add(store);
-
         return ResultGenerator.genSuccessResult(result);
     }
 
 
     /**
      * 查询全部店铺接口
+     *
      * @return
      */
     @PostMapping("/findAll")
-    public Result findAll(){
+    @ApiOperation(value="查询所有店铺")
+    public Result findAll() {
         List<Store> result = storeService.findAll();
         return ResultGenerator.genSuccessResult(result);
     }
@@ -50,7 +57,8 @@ public class StoreController extends BaseController{
      *
      */
     @PostMapping("/findByName")
-    public Result findByName(@RequestBody StoreParam storeParam){
+    @ApiOperation(value="根据店铺名称查询")
+    public Result findByName(@RequestBody StoreParam storeParam) {
         List<Store> result = storeService.findStoreByName(storeParam.getStoreName());
         return ResultGenerator.genSuccessResult(result);
     }

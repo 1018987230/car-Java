@@ -6,6 +6,8 @@ import com.example.nft.entity.Car;
 import com.example.nft.service.CarService;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/car")
+@Api(tags = "4.车辆模块")
 public class CarController extends BaseController{
 
 
@@ -25,13 +28,14 @@ public class CarController extends BaseController{
 
 
     @PostMapping("/add")
+    @ApiOperation(value = "用户添加车辆")
     public Result add(@RequestBody Car car){
-        System.out.println(car);
         String result = carService.add(car);
         return ResultGenerator.genSuccessResult(result);
     }
 
     @PostMapping("/remove")
+    @ApiOperation(value = "用户删除车辆")
     public Result remove(@RequestBody CarParam carParam){
         String result = carService.removeByNumber(carParam.getCarNumber());
         return ResultGenerator.genSuccessResult(result);
