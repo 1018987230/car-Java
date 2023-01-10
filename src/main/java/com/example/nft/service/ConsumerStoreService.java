@@ -5,6 +5,7 @@ import com.example.nft.entity.Consumer;
 import com.example.nft.entity.Store;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -14,7 +15,7 @@ public interface ConsumerStoreService {
 
     String removeConsumerStore(String consumerUuid, String storeUuid);
 
-    List<Store> findStoreByConsumerUuid(String consumerUuid);
+    HashMap<String, Object> findStoreByConsumerUuid(String consumerUuid);
 
-    List<Consumer> findConsumerByStoreUuid(String storeUuid, Integer currentPage);
+    HashMap<String, Object> findConsumerByStoreUuid(String storeUuid, Integer currentPage);
 }

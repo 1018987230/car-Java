@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -51,8 +52,8 @@ public class ConsumerStoreController {
     @PostMapping("/findConsumerByStoreId")
     @ApiOperation(value="查询店铺下的所有用户")
     public Result findConsumerByStoreId(@RequestBody ConsumerStoreParam consumerStoreParam){
-        List<Consumer> result = consumerStoreService.findConsumerByStoreUuid(consumerStoreParam.getStoreUuid(), consumerStoreParam.getCurrentPage());
-        System.out.println(result);
+        HashMap<String, Object> result = consumerStoreService.findConsumerByStoreUuid(consumerStoreParam.getStoreUuid(), consumerStoreParam.getCurrentPage());
+
         return ResultGenerator.genSuccessResult(result);
     }
 
@@ -62,7 +63,7 @@ public class ConsumerStoreController {
     @PostMapping("/findStoreByConsumerId")
     @ApiOperation(value="查询顾客加入的所有店铺")
     public Result findStoreByConsumerId(@RequestBody ConsumerStoreParam consumerStoreParam){
-        List<Store> result = consumerStoreService.findStoreByConsumerUuid(consumerStoreParam.getConsumerUuid());
+        HashMap<String, Object> result = consumerStoreService.findStoreByConsumerUuid(consumerStoreParam.getConsumerUuid());
         return ResultGenerator.genSuccessResult(result);
     }
 }

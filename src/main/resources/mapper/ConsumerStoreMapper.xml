@@ -37,12 +37,18 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
     <!--  根据店铺uuid查询到当前店铺下的顾客  -->
-    <select id="getConsumerByStoreUuid" resultMap="ConsumerByStore">
+    <select id="selectConsumerByStoreUuid" resultMap="ConsumerByStore">
         select c.*
         from t_consumer_store cs, t_consumer c
         where cs.consumer_uuid = c.consumer_uuid and cs.store_uuid = #{storeUuid}
         limit #{currentPage}, 20
     </select>
+    <select id="selectConsumerCountByStoreUuid" resultType="java.lang.Integer">
+        select count(*)
+        from t_consumer_store cs, t_consumer c
+        where cs.consumer_uuid = c.consumer_uuid and cs.store_uuid = #{storeUuid}
+    </select>
+
 
 
     <resultMap id="StoreByConsumer" type="com.example.nft.entity.Store">
@@ -58,11 +64,16 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
     <!--  根据顾客id查询到顾客加入的店铺  -->
-    <select id="getStoreByConsumerUuid" resultMap="StoreByConsumer">
+    <select id="selectStoreByConsumerUuid" resultMap="StoreByConsumer">
         select s.*
         from t_consumer_store cs, t_store s
         where cs.store_uuid = s.store_uuid and cs.consumer_uuid = #{consumerUuid};
 
+    </select>
+    <select id="selectStoreCountByConsumerUuid" resultType="java.lang.Integer">
+        select count(*)
+        from t_consumer_store cs, t_store s
+        where cs.store_uuid = s.store_uuid and cs.consumer_uuid = #{consumerUuid};
     </select>
 
 

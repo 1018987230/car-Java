@@ -241,7 +241,7 @@ public class ConsumerServiceImpl implements ConsumerService {
         List<Car> cars = carMapper.selectByPhone(consumerPhone);
 
         // 对应的店铺
-        List<Store> stores = consumerStoreMapper.getStoreByConsumerUuid(consumer.getConsumerUuid());
+        List<Store> stores = consumerStoreMapper.selectStoreByConsumerUuid(consumer.getConsumerUuid());
 
 
         // 返回前端的车辆列表

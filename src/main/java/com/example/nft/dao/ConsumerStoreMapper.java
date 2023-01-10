@@ -21,10 +21,12 @@ public interface ConsumerStoreMapper {
     Integer deleteConsumerStore(String consumerUuid, String storeUuid);
 
     // 通过顾客id获取加入的店铺
-    List<Store> getStoreByConsumerUuid(String consumerUuid);
+    List<Store> selectStoreByConsumerUuid(String consumerUuid);
+    Integer selectStoreCountByConsumerUuid(String consumerUuid);
 
     // 通过店铺id获取所有顾客id
-    List<Consumer> getConsumerByStoreUuid(String storeUuid, Integer currentPage);
+    List<Consumer> selectConsumerByStoreUuid(String storeUuid, Integer currentPage);
+    Integer selectConsumerCountByStoreUuid(String storeUuid);
 
 
 }

@@ -10,6 +10,7 @@ import com.example.nft.service.ConsumerStoreService;
 import com.example.nft.service.ex.DuplicateException;
 import com.example.nft.service.ex.InsertException;
 import com.example.nft.service.ex.SelectException;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -146,8 +148,13 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
      * @return
      */
     @Override
-    public List<Store> findStoreByConsumerUuid(String consumerUuid) {
-        return consumerStoreMapper.getStoreByConsumerUuid(consumerUuid);
+    public HashMap<String, Object> findStoreByConsumerUuid(String consumerUuid) {
+        HashMap<String, Object> map = new HashMap<>();
+        List<Store> info = consumerStoreMapper.selectStoreByConsumerUuid(consumerUuid);
+        Integer sum = consumerStoreMapper.selectStoreCountByConsumerUuid(consumerUuid);
+        map.put("info", info);
+        map.put("sum", sum);
+        return map;
     }
 
     /**
@@ -156,8 +163,13 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
      * @return
      */
     @Override
-    public List<Consumer> findConsumerByStoreUuid(String storeUuid, Integer currentPage) {
-        return consumerStoreMapper.getConsumerByStoreUuid(storeUuid, (currentPage - 1)*20);
+    public HashMap<String, Object> findConsumerByStoreUuid(String storeUuid, Integer currentPage) {
+        HashMap<String, Object> map = new HashMap<>();
+        List<Consumer> info = consumerStoreMapper.selectConsumerByStoreUuid(storeUuid, (currentPage - 1)*20);
+        Integer sum = consumerStoreMapper.selectConsumerCountByStoreUuid(storeUuid);
+        map.put("info", info);
+        map.put("sum", sum);
+        return map;
     }
 
 }

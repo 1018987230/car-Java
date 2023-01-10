@@ -120,7 +120,7 @@ public class ConsumerController extends BaseController {
     }
 
     @PostMapping("/findByNumber")
-    @ApiOperation(value = "根据手机号查询用户")
+    @ApiOperation(value = "根据车牌号查询用户")
     public Result findByNumber(@RequestBody ConsumerParam consumerParam){
         Consumer result = consumerService.findByNumber(consumerParam.getCarNumber());
         if(result == null){
