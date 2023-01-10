@@ -6,7 +6,7 @@ CREATE TABLE `t_admin` (
    `admin_name` varchar(50) NOT NULL COMMENT '管理员昵称',
    `is_delete` int DEFAULT '0' COMMENT '0：未删除，1：已删除',
    PRIMARY KEY (`admin_id`)
-) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC ;
+) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 
 -- 店铺表
@@ -150,17 +150,18 @@ CREATE TABLE `t_balance_log`(
 
 
 -- 订单表
-CREATE TABLE `t_order`(
-    `order_id` int NOT NULL AUTO_INCREMENT COMMENT '订单序号',
-    `order_num` varchar(50) NOT NULL COMMENT '订单号',
-    `order_sponsor_phone` varchar(50) NOT NULL COMMENT '订单发起人手机号',
-    `order_sponsor_name` varchar (50) NOT NULL COMMENT '订单发起人姓名',
-    `order_service` varchar (50) NOT NUll COMMENT '需要的服务',
-    `order_desc` varchar (128) DEFAULT '' COMMENT '情况描述',
-    `order_status` int DEFAULT 0 COMMENT '订单状态，0: 预约中，1: 预约成功，2：服务中，3：服务完成，4：订单结束',
-    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-)
+-- CREATE TABLE `t_order`(
+--     `order_id` int NOT NULL AUTO_INCREMENT COMMENT '订单序号',
+--     `order_num` varchar(50) NOT NULL COMMENT '订单号',
+--     `order_sponsor_phone` varchar(50) NOT NULL COMMENT '订单发起人手机号',
+--     `order_sponsor_name` varchar (50) NOT NULL COMMENT '订单发起人姓名',
+--     `order_service` varchar (50) NOT NUll COMMENT '需要的服务',
+--     `order_desc` varchar (128) DEFAULT '' COMMENT '情况描述',
+--     `order_status` int DEFAULT 0 COMMENT '订单状态，0: 预约中，1: 预约成功，2：服务中，3：服务完成，4：订单结束',
+--     `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+--     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+--     PRIMARY KEY (`order_id`)
+-- ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 -- 产品原料
 CREATE TABLE `t_product`(
