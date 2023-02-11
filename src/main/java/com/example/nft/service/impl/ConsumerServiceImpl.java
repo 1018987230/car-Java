@@ -8,6 +8,7 @@ import com.example.nft.entity.Store;
 import com.example.nft.service.ConsumerService;
 import com.example.nft.service.ex.*;
 import com.example.nft.utils.MD5Util;
+import com.example.nft.utils.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,9 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     @Resource
     private ConsumerBalanceMapper consumerBalanceMapper;
+
+    @Resource
+    private RedisUtil redisUtil;
     /**
      *  增加用户
      * @param
@@ -42,8 +46,9 @@ public class ConsumerServiceImpl implements ConsumerService {
     @Override
     public String add(String account, String password, String valid) {
 
-        // 验证码校验，暂时默认验证码123456
-        if(!valid.equals("123456")){
+
+        // 验证码校验，从redis中通过手机号获取
+        if(!valid.equals(redisUtil.get(account))){
             throw new InsertException(ServiceResultEnum.VALID_ERROR.getResult());
         }
 

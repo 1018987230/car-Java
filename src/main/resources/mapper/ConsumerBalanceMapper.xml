@@ -17,7 +17,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         balance_store_uuid, balance_owner_phone, balance_money, balance_service_1, balance_service_2, balance_service_3, balance_service_4,
-        balance_service_5,create_time
+        balance_service_5, balance_status, create_time
     </sql>
 
 
