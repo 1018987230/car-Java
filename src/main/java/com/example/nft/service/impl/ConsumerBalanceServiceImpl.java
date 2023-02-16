@@ -4,8 +4,11 @@ package com.example.nft.service.impl;
 import com.example.nft.commons.ServiceResultEnum;
 import com.example.nft.dao.BalanceLogMapper;
 import com.example.nft.dao.ConsumerBalanceMapper;
+import com.example.nft.dao.ConsumerMapper;
+import com.example.nft.entity.Consumer;
 import com.example.nft.entity.ConsumerBalance;
 import com.example.nft.service.ConsumerBalanceService;
+import com.example.nft.service.ConsumerService;
 import com.example.nft.service.ex.BalanceException;
 import com.example.nft.service.ex.InsertException;
 import com.example.nft.service.ex.SelectException;
@@ -27,6 +30,13 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
     @Resource
     private BalanceLogMapper balanceLogMapper;
 
+    @Resource
+    private ConsumerMapper consumerMapper;
+
+    public static final Integer NORMAL_BALANCE_STATUS = 0;
+
+    public static final Integer ABNORMAL_BALANCE_STATUS = 1;
+
     /**
      * 账户余额全部变动
      * @param balanceOwnerPhone
@@ -40,7 +50,7 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
     @Override
     public String change(String balanceOwnerPhone, String storeUuid,Integer costMoney, Integer costService1, Integer costService2,
                           Integer costService3, Integer costService4, Integer costService5) {
-        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
+        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone,NORMAL_BALANCE_STATUS);
         // 查找用户是否存在
         if(db_res == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
@@ -82,7 +92,7 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
     @Override
     public ConsumerBalance moneyChange(String balanceOwnerPhone, String storeUuid,Integer costMoney) {
         System.out.println(balanceOwnerPhone);
-        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
+        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone,NORMAL_BALANCE_STATUS);
         // 查找用户是否存在
         if(db_res == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
@@ -106,14 +116,14 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
             throw new InsertException(ServiceResultEnum.DB_INSERT_LOG_ERROR.getResult());
         }
 
-        return consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
+        return consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone,NORMAL_BALANCE_STATUS);
     }
 
     @Override
     public ConsumerBalance serviceChange(String balanceOwnerPhone,String storeUuid, Integer costService1, Integer costService2,
                                 Integer costService3, Integer costService4, Integer costService5) {
         // 查找用户是否存在
-        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
+        ConsumerBalance db_res = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone,NORMAL_BALANCE_STATUS);
         if(db_res == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
@@ -141,7 +151,25 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
                 costService3,costService4,costService5)){
             throw new InsertException(ServiceResultEnum.DB_INSERT_LOG_ERROR.getResult());
         }
-        return consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
+        return consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone,NORMAL_BALANCE_STATUS);
+    }
+
+    /**
+     * 用户和店铺连接或断开时调用
+     * @param consumerUuid
+     * @param storeUuid
+     * @param balanceStatus
+     * @return
+     */
+    @Override
+    public String statusChange(String consumerUuid, String storeUuid, Integer balanceStatus) {
+        // 用户uuid转为手机号
+        String consumerPhone = consumerMapper.selectByUuid(consumerUuid).getConsumerPhone();
+        if(!consumerBalanceMapper.updateStatus(consumerPhone, storeUuid, balanceStatus)){
+            throw new UpdateException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
+        }
+
+        return ServiceResultEnum.SUCCESS.getResult();
     }
 
     /**
@@ -150,7 +178,7 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
      */
     @Override
     public ArrayList<Object> findOne(String balanceOwnerPhone, String storeUuid){
-        ConsumerBalance dbRes = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone);
+        ConsumerBalance dbRes = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone,NORMAL_BALANCE_STATUS);
         if(dbRes == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }

@@ -22,10 +22,13 @@ public interface NoticeMapper {
 
     Notice selectByUuid(String noticeUuid);
 
+
     List<Notice> selectByConsumerUuid(String consumerUuid, Integer currentPage);
 
     List<Notice> selectByStoreUuid(String storeUuid, Integer currentPage);
 
+    List<Notice> selectByStoreConsumer(String storeUuid, String consumerUuid, Integer currentPage);
+    Integer selectByStoreConsumerCount(String storeUuid, String consumerUuid);
 
     /**
      * @Description 根据店铺uuid查询通知消息

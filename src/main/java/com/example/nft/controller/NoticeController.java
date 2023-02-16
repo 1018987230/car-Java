@@ -4,6 +4,7 @@ import com.example.nft.controller.param.NoticeParam;
 import com.example.nft.controller.param.PageParam;
 import com.example.nft.dao.NoticeMapper;
 import com.example.nft.entity.Notice;
+import com.example.nft.service.ConsumerService;
 import com.example.nft.service.NoticeService;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
@@ -34,6 +35,9 @@ public class NoticeController {
 
     @Resource
     private NoticeService noticeService;
+
+    @Resource
+    private ConsumerService consumerService;
 
     /**
      * 仅做测试
@@ -98,6 +102,32 @@ public class NoticeController {
         HashMap<String, Object> result = noticeService.findByStoreUuid(pageParam.getStoreUuid(), pageParam.getCurrentPage());
         return ResultGenerator.genSuccessResult(result);
     }
+
+    /**
+     * 店铺uuid和顾客uuid联合查询
+     * @param pageParam
+     * @return
+     */
+    @PostMapping("/findByStoreConsumer")
+    public Result findByStoreConsumer(@RequestBody PageParam pageParam){
+        HashMap<String, Object> result = noticeService.findByStoreConsumer(pageParam.getStoreUuid(), pageParam.getConsumerUuid(), pageParam.getCurrentPage());
+        return ResultGenerator.genSuccessResult(result);
+    }
+
+    /**
+     * 店铺uuid和顾客手机号联合查询
+     * @param pageParam
+     * @return
+     */
+    @PostMapping("/findByStoreConsumerPhone")
+    public Result findByStoreConsumerPhone(@RequestBody PageParam pageParam){
+        // 顾客phone转uuid
+        String consumerUuid = consumerService.findByPhone(pageParam.getConsumerPhone()).getConsumerUuid();
+        System.out.println(consumerUuid);
+        HashMap<String, Object> result = noticeService.findByStoreConsumer(pageParam.getStoreUuid(), consumerUuid, pageParam.getCurrentPage());
+        return ResultGenerator.genSuccessResult(result);
+    }
+
 
 
     @PostMapping("/findConsumerChangeByStore")

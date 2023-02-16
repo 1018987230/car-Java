@@ -27,6 +27,7 @@
         select * from t_notice where notice_uuid=#{noticeUuid}
     </select>
 
+
     <select id="selectByConsumerUuid" resultMap="BaseResultMap">
         select * from t_notice where notice_from=#{consumerUuid} or notice_to=#{consumerUuid} order by create_time desc limit #{currentPage}, 20
     </select>
@@ -35,6 +36,14 @@
         select * from t_notice where notice_from=#{storeUuid} or notice_to=#{storeUuid} order by create_time desc limit #{currentPage}, 20
     </select>
 
+    <select id="selectByStoreConsumer" resultMap="BaseResultMap">
+        select * from t_notice where (notice_from=#{consumerUuid} and notice_to=#{storeUuid}) or (notice_from=#{storeUuid} and notice_to=#{consumerUuid}) order by create_time desc limit #{currentPage}, 20
+    </select>
+    <select id="selectByStoreConsumerCount" resultType="java.lang.Integer">
+        select count(*) from t_notice where (notice_from=#{consumerUuid} and notice_to=#{storeUuid}) or (notice_from=#{storeUuid} and notice_to=#{consumerUuid})
+    </select>
+
+
     <select id="selectConsumerChangeByStore" resultMap="BaseResultMap">
         select * from t_notice where notice_to=#{storeUuid} and notice_title=#{noticeTitle} order by create_time desc limit #{currentPage}, 20
     </select>
@@ -42,7 +51,6 @@
 
     <select id="selectCount" resultType="java.lang.Integer">
         select count(*) from t_notice
-
     </select>
 
 

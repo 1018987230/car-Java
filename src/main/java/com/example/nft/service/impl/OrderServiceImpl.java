@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 生成订单
         // 生成伪随机六位数 + 当前时间戳
-        String orderUuid = new Date().getTime() + (int)((Math.random()*9+1)*100000) + "";
+        String orderUuid = "O" + (new Date().getTime() + (int)((Math.random()*9+1)*100000) + "").substring(2);;
         Order order = new Order();
         order.setOrderUuid(orderUuid);
         order.setOrderConsumerUuid(orderConsumerUuid);
@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 生成通知，给请求的店铺发送通知信息
         Notice notice = new Notice();
-        String noticeUuid = new Date().getTime() + (int)((Math.random()*9+1)*100000) + "";
+        String noticeUuid = "N" + (new Date().getTime() + (int)((Math.random()*9+1)*100000) + "").substring(2);
         notice.setNoticeUuid(noticeUuid);
         notice.setNoticeFrom(orderConsumerUuid);
         notice.setNoticeTo(orderStoreUuid);
@@ -170,12 +170,13 @@ public class OrderServiceImpl implements OrderService {
         System.out.println(consumer);
         // 5. 生成通知，给请求的店铺发送通知信息
         Notice notice = new Notice();
-        String noticeUuid = new Date().getTime() + (int)((Math.random()*9+1)*100000) + "";
+        String noticeUuid = "N" + (new Date().getTime() + (int)((Math.random()*9+1)*100000) + "").substring(2);
         notice.setNoticeUuid(noticeUuid);
         notice.setNoticeFrom(order.getOrderConsumerUuid());
         notice.setNoticeTo(order.getOrderStoreUuid());
         notice.setNoticeTitle(NOTICE_TITLE);
-        notice.setNoticeContent("用户 "+consumer.getConsumerName() + consumer.getConsumerUuid()  + ""+ " 改变订单 " + noticeUuid + " 的状态为"+ orderStatus);
+        String text = numToText(orderStatus);
+        notice.setNoticeContent("订单号：" + noticeUuid + " 的状态发生改变，当前状态："+ text);
 
         if(noticeMapper.insertNotice(notice) == 0){
             throw new InsertException(ServiceResultEnum.ORDER_INSERT_ERROR.getResult());
@@ -281,6 +282,23 @@ public class OrderServiceImpl implements OrderService {
 
 
         return map;
+    }
+
+    public String numToText(Integer num){
+        if(num==0){
+            return "预约中";
+        }else if(num == 1){
+            return "取消";
+        }else if(num == 2){
+            return "预约成功";
+        }else if(num == 3){
+            return "操作中";
+        }else if(num == 4){
+            return "订单完成";
+        }else if(num == 5){
+            return "订单关闭";
+        }
+        return "异常状态";
     }
 
 }

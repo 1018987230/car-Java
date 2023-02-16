@@ -27,6 +27,7 @@ public interface NoticeService {
 
     HashMap<String, Object> findByStoreUuid(String storeUuid, Integer currentPage);
 
+    HashMap<String, Object> findByStoreConsumer(String storeUuid, String consumerUuid, Integer currentPage);
 
     /**
      * @Description 查找店铺下的通知信息

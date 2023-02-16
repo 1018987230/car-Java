@@ -27,12 +27,12 @@
 
 
     <!--设置余额状态-->
-    <update id="statusBalance" >
-        UPDATE t_consumer_balance SET balance_status=#{balanceStatus} WHERE balance_owner_phone=#{balanceOwnerPhone} and store_uuid = #{storeUuid}
+    <update id="updateStatus" >
+        UPDATE t_consumer_balance SET balance_status=#{balanceStatus} WHERE balance_owner_phone=#{balanceOwnerPhone} and balance_store_uuid = #{storeUuid}
     </update>
 
     <select id="selectByPhoneStore"  resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from t_consumer_balance where balance_owner_phone=#{consumerPhone} and balance_store_uuid=#{storeUuid} and balance_status = 0
+        select <include refid="Base_Column_List"/> from t_consumer_balance where balance_owner_phone=#{consumerPhone} and balance_store_uuid=#{storeUuid} and balance_status = #{balanceStatus}
     </select>
 
     <select id="count" resultType="java.lang.Integer">
@@ -40,7 +40,7 @@
     </select>
 
     <select id="selectMany" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from t_consumer_balance where balance_store_uuid=#{storeUuid} order by balance_owner_phone desc limit #{currentPage}, 20
+        select <include refid="Base_Column_List"/> from t_consumer_balance where balance_store_uuid=#{storeUuid} order by balance_status limit #{currentPage}, 20
     </select>
 
     <update id="updateMoneyByPhone" parameterType="com.example.nft.entity.ConsumerBalance">

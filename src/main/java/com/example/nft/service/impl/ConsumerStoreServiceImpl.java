@@ -28,6 +28,10 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
 
     private static final String NOTICE_TITLE = "人员消息";
 
+    public static final Integer NORMAL_BALANCE_STATUS = 0;
+
+    public static final Integer ABNORMAL_BALANCE_STATUS = 1;
+
     @Resource
     private ConsumerStoreMapper consumerStoreMapper;
 
@@ -75,7 +79,7 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
 
         // 发起消息通知: 用户加入店铺
         Notice notice = new Notice();
-        String noticeUuid = new Date().getTime() + (int)((Math.random()*9+1)*100000) + "";
+        String noticeUuid = "N" + (new Date().getTime() + (int)((Math.random()*9+1)*100000) + "").substring(2);
         notice.setNoticeUuid(noticeUuid);
         notice.setNoticeFrom(consumerUuid);
         notice.setNoticeTo(storeUuid);
@@ -87,12 +91,15 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
         }
 
         // 用户加入店铺时，需要创建账户余额
-        if(consumerBalanceMapper.selectByPhoneStore(storeUuid, consumer.getConsumerPhone()) == null){
+
+        // 判断店铺中是否已经存在账户
+        if(consumerBalanceMapper.selectByPhoneStore(storeUuid, consumer.getConsumerPhone(),NORMAL_BALANCE_STATUS) == null && consumerBalanceMapper.selectByPhoneStore(storeUuid, consumer.getConsumerPhone(),ABNORMAL_BALANCE_STATUS) == null){
+            // 插入账户
             if(!consumerBalanceMapper.insertBalance(storeUuid, consumer.getConsumerPhone())){
                 throw new InsertException(ServiceResultEnum.BALANCE_INSERT_ERROR.getResult());
             }
-
         }
+
 
         logger.info("店铺和用户建立联系：" + "consumerId: " + consumerUuid + "storeId: " + storeUuid );
         return  ServiceResultEnum.SUCCESS.getResult();
@@ -125,7 +132,7 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
 
         // 发起消息通知: 用户退出店铺
         Notice notice = new Notice();
-        String noticeUuid = new Date().getTime() + (int)((Math.random()*9+1)*100000) + "";
+        String noticeUuid = "N" + (new Date().getTime() + (int)((Math.random()*9+1)*100000) + "").substring(2);
         notice.setNoticeUuid(noticeUuid);
         notice.setNoticeFrom(consumerUuid);
         notice.setNoticeTo(storeUuid);

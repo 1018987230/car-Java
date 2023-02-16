@@ -11,13 +11,13 @@ public interface ConsumerBalanceMapper {
     Boolean insertBalance(String storeUuid ,String balanceOwnerPhone);
 
     // 设置余额状态
-    Boolean statusBalance(Integer balanceStatus,String balanceOwnerPhone, String storeUuid);
+    Boolean updateStatus(String balanceOwnerPhone, String storeUuid,Integer balanceStatus);
 
     List<ConsumerBalance> selectMany(String storeUuid , Integer currentPage);
 
     Integer count(String storeUuid);
 
-    ConsumerBalance selectByPhoneStore(String storeUuid, String consumerPhone);
+    ConsumerBalance selectByPhoneStore(String storeUuid, String consumerPhone, Integer balanceStatus);
 
     Boolean update(String balanceOwnerPhone, String storeUuid, Integer balanceMoney, Integer balanceService1, Integer balanceService2,
                    Integer balanceService3, Integer balanceService4, Integer balanceService5);

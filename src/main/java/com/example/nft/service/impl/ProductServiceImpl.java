@@ -97,9 +97,9 @@ public class ProductServiceImpl implements ProductService {
             productType = 2;
         }
 
-        productQuantity = product.getProductQuantity() + productQuantity;
+        Integer newProductQuantity = product.getProductQuantity() + productQuantity;
         // update product quantity
-        if(productMapper.updateQuantityByUuid(productUuid, productQuantity) == 0){
+        if(productMapper.updateQuantityByUuid(productUuid, newProductQuantity) == 0){
             throw new ServiceException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
         }
 
@@ -110,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
         productLog.setStoreUuid(product.getStoreUuid());
         productLog.setProductUuid(productUuid);
         productLog.setProductName(product.getProductName());
-        productLog.setProductLogQuantity(product.getProductQuantity());
+        productLog.setProductLogQuantity(productQuantity);
         productLog.setProductUnit(product.getProductUnit());
         productLog.setProductLogPrice(product.getProductPrice());
         productLog.setProductLogType(productType);

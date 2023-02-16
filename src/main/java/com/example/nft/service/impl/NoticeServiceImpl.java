@@ -32,6 +32,17 @@ public class NoticeServiceImpl implements NoticeService {
     @Resource
     private NoticeMapper noticeMapper;
 
+    @Override
+    public HashMap<String, Object> findByStoreConsumer(String storeUuid, String consumerUuid, Integer currentPage) {
+        List<Notice> info = noticeMapper.selectByStoreConsumer(storeUuid, consumerUuid, currentPage);
+        Integer sum = noticeMapper.selectByStoreConsumerCount(storeUuid, consumerUuid);
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("info", info);
+        map.put("sum", sum);
+        return map;
+    }
+
     /**
      * 创建通知消息，传递过来的必须是Notice对象
      * @param notice
@@ -39,7 +50,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     public String add(Notice notice) {
-        String noticeUuid = new Date().getTime() + (int)((Math.random()*9+1)*100000) + "";
+        String noticeUuid = "N" + (new Date().getTime() + (int)((Math.random()*9+1)*100000) + "").substring(2);
         notice.setNoticeUuid(noticeUuid);
         if (noticeMapper.insertNotice(notice) == 0){
             throw new InsertException(ServiceResultEnum.DB_INSERT_ERROR.getResult());

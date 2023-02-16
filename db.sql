@@ -127,7 +127,7 @@ CREATE TABLE `t_consumer_balance`(
      `balance_service_3` int  DEFAULT '0' COMMENT '服务3',
      `balance_service_4` int  DEFAULT '0' COMMENT '服务4',
      `balance_service_5` int  DEFAULT '0' COMMENT '服务5',
-     `balance_status` int  DEFAULT '0' COMMENT '是否被删除',
+     `balance_status` int  DEFAULT '0' COMMENT '是否被删除,0：用户账户正常 1: 用户退出当前店铺，账户状态异常',
      `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
      PRIMARY KEY (`balance_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
