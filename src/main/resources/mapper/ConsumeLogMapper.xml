@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.ConsumeLogMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.ConsumeLog">
+        <id column="car_id" property="carId"/>
+        <result column="consume_log_id" property="consumeLogId"/>
+        <result column="consume_log_consumer" property="consumeLogConsumer"/>
+        <result column="consume_log_store" property="consumeLogStore"/>
+        <result column="consume_log_money" property="consumeLogMoney"/>
+        <result column="consume_log_service" property="consumeLogService"/>
+        <result column="consume_log_service_num" property="consumeLogServiceNum"/>
+        <result column="consume_log_source" property="consumeLogSource"/>
+        <result column="consume_log_status" property="consumeLogStatus"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.nft.entity.ConsumeLog">
+        INSERT t_consume_log (consume_log_consumer,consume_log_store,consume_log_money,consume_log_service,consume_log_service_num,consume_log_source)
+                    VALUES (#{consumeLogConsumer},#{consumeLogStore},#{consumeLogMoney},#{consumeLogService},#{consumeLogServiceNum},#{consumeLogSource})
+    </insert>
+
+
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        SELECT * FROM t_car WHERE car_owner_phone=#{carOwnerPhone} order by car_id desc
+    </select>
+
+
+    <select id="selectMany" resultMap="BaseResultMap">
+        select * from t_consume_log
+        <where>
+            consume_log_status = 0
+            <if test="consumerUuid !=null and consumerUuid != '' ">
+                and consume_log_consumer =#{consumerUuid}
+            </if>
+            <if test="storeUuid !=null and storeUuid != '' ">
+                and consume_log_store =#{storeUuid}
+            </if>
+        </where>
+        order by create_time
+        desc limit #{currentPage}, 20
+    </select>
+
+    <select id="selectManyCount" resultType="java.lang.Integer">
+        select count(*) from t_consume_log
+        <where>
+            consume_log_status = 0
+            <if test="consumerUuid !=null and consumerUuid != '' ">
+                and consume_log_consumer =#{consumerUuid}
+            </if>
+            <if test="storeUuid !=null and storeUuid != '' ">
+                and consume_log_store =#{storeUuid}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -4,7 +4,9 @@ package com.example.nft.service.impl;
 import com.example.nft.dao.StoreMapper;
 import com.example.nft.entity.Order;
 import com.example.nft.entity.Store;
+import com.example.nft.entity.StoreSetting;
 import com.example.nft.service.StoreService;
+import com.example.nft.service.StoreSettingService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +19,9 @@ public class StoreServiceImpl implements StoreService {
     @Resource
     private StoreMapper storeMapper;
 
+    @Resource
+    private StoreSettingService storeSettingService;
+
     /**
      * 添加店铺
      * @param store
@@ -27,6 +32,7 @@ public class StoreServiceImpl implements StoreService {
         // 生成伪随机六位数 + 当前时间戳
         String storeUuid ="B" + (new Date().getTime() + (int)((Math.random()*9+1)*100000) + "").substring(2);
         store.setStoreUuid(storeUuid);
+        storeSettingService.add(storeUuid);
         return storeMapper.insert(store);
     }
 

@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Data
 public class BalanceParam implements Serializable {
     private String balanceOwnerPhone;
+    private String consumerUuid;
     private String storeUuid;
     private Integer costMoney;
     private Integer costService1;

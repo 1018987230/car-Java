@@ -48,9 +48,9 @@ public class ConsumerServiceImpl implements ConsumerService {
 
 
         // 验证码校验，从redis中通过手机号获取
-        if(!valid.equals(redisUtil.get(account))){
-            throw new InsertException(ServiceResultEnum.VALID_ERROR.getResult());
-        }
+//        if(!valid.equals(redisUtil.get(account))){
+//            throw new InsertException(ServiceResultEnum.VALID_ERROR.getResult());
+//        }
 
         Consumer consumer = new Consumer();
 
@@ -110,6 +110,8 @@ public class ConsumerServiceImpl implements ConsumerService {
         if(!password.equals(dbRes.getConsumerPassword())){
             throw new SelectException(ServiceResultEnum.DB_PASSWORD_ERROR.getResult());
         }
+
+
 
 
         return ServiceResultEnum.SUCCESS.getResult();

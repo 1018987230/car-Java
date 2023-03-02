@@ -25,6 +25,24 @@ CREATE TABLE `t_store`(
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 
+DROP TABLE IF NOT EXISTS `t_store_setting`;
+CREATE TABLE `t_store_setting` (
+    `setting_id` int NOT NULL  AUTO_INCREMENT COMMENT '店铺配置' ,
+    `store_uuid` varchar(30) NOT NULL UNIQUE  COMMENT '店铺uuid',
+    `service_name1` varchar(50)  DEFAULT '默认配置名' COMMENT '店铺服务1',
+    `service_name2` varchar(50)  DEFAULT '默认配置名' COMMENT '店铺服务2',
+    `service_name3` varchar(50)  DEFAULT '默认配置名' COMMENT '店铺服务3',
+    `service_name4` varchar(50)  DEFAULT '默认配置名' COMMENT '店铺服务4',
+    `service_name5` varchar(50)  DEFAULT '默认配置名' COMMENT '店铺服务5',
+    `setting1` varchar(50) DEFAULT '默认' COMMENT '预留配置',
+    `setting2` varchar(50) DEFAULT '默认' COMMENT '预留配置',
+    `setting3` varchar(50) DEFAULT '默认' COMMENT '预留配置',
+    `setting4` varchar(50) DEFAULT '默认' COMMENT '预留配置',
+    `setting5` varchar(50) DEFAULT '默认' COMMENT '预留配置',
+    PRIMARY KEY (`setting_id`)
+) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
+
+
 --operator 店铺管理员表
 CREATE TABLE `t_operator` (
    `operator_id` int NOT NULL AUTO_INCREMENT COMMENT '操作员id',
@@ -38,6 +56,16 @@ CREATE TABLE `t_operator` (
    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
    PRIMARY KEY (`operator_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC ;
+
+
+-- 微信和手机号对应表
+CREATE TABLE `t_openid_phone`
+(
+    `id`     int(11) NOT NULL AUTO_INCREMENT,
+    `openid` varchar(30) NOT NULL UNIQUE COMMENT '微信openid',
+    `phone`  varchar(30) NOT NULL UNIQUE COMMENT '用户手机号',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC ;
 
 
 -- 顾客表
@@ -55,6 +83,9 @@ CREATE TABLE `t_consumer`(
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`consumer_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
+
+
+
 
 
 -- 顾客店铺关系中间表
@@ -98,6 +129,22 @@ CREATE TABLE `t_order`(
     `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`order_id`)
+) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
+
+
+-- 消费记录表
+drop TABLE IF NOT EXISTS `t_consume_log`
+CREATE TABLE `t_consume_log` (
+    `consume_log_id`  int NOT NUll AUTO_INCREMENT COMMENT '消费记录id',
+    `consume_log_consumer` varchar(30) NOT NULL DEFAULT 'C00000000001' COMMENT '消费的顾客uuid',
+    `consume_log_store`  varchar(30) NOT NULL COMMENT '消费的店铺uuid',
+    `consume_log_money` int NOT NULL DEFAULT 0  COMMENT '消费金额数目，单位分',
+    `consume_log_service` varchar(50) NOT NULL  COMMENT '消费的服务',
+    `consume_log_service_num` int NOT NULL  COMMENT '消费的服务次数',
+    `consume_log_source` varchar(50) NOT NULL DEFAULT 'O00000000001' COMMENT '消费来源',
+    `consume_log_status` int NOT NULL DEFAULT 0 COMMENT '0:正常',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`consume_log_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 

@@ -2,6 +2,8 @@ package com.example.nft.controller.param;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Author wangyixiong
  * @Date 2022/10/23 上午4:17
@@ -11,7 +13,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
-public class OrderIdParam {
+public class OrderIdParam implements Serializable {
     private String orderUuid;
     private Integer orderId;
     private String orderConsumerUuid;

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.OpenidPhoneMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.OpenidPhone">
+        <id column="id" property="id"/>
+        <result column="openid" property="openid"/>
+        <result column="phone" property="phone"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.nft.entity.OpenidPhone">
+        INSERT t_openid_phone (openid,phone)
+                    VALUES (#{openid},#{phone})
+    </insert>
+
+
+    <select id="selectByOpenid" resultMap="BaseResultMap">
+        SELECT * FROM t_openid_phone WHERE openid=#{openid}
+    </select>
+
+
+</mapper>

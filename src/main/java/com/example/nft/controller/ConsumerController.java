@@ -7,7 +7,9 @@ import com.example.nft.controller.param.LoginParam;
 import com.example.nft.controller.param.PageParam;
 import com.example.nft.controller.param.PasswordParam;
 import com.example.nft.entity.Consumer;
+import com.example.nft.entity.OpenidPhone;
 import com.example.nft.service.ConsumerService;
+import com.example.nft.service.OpenidPhoneService;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
 import io.swagger.annotations.Api;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class ConsumerController extends BaseController {
 
     @Autowired
     private ConsumerService consumerService;
+
+    @Resource
+    private OpenidPhoneService openidPhoneService;
 
 
     @PostMapping("/login")
@@ -49,6 +55,30 @@ public class ConsumerController extends BaseController {
         }
         return ResultGenerator.genSuccessResult(result);
     }
+
+    /**
+     * 微信通过openid 进行注册和登录，没有注册直接注册，默认密码“12345678”
+     */
+    @PostMapping("/wx/add")
+    public synchronized Result wxAdd(@RequestBody OpenidPhone openidPhone){
+        System.out.println(openidPhone);
+
+        if(openidPhoneService.findByOpenId(openidPhone.getOpenid()).equals("success")){
+            // openid为空时，进行插入操作
+            if(!openidPhoneService.add(openidPhone).equals("success")){
+                return ResultGenerator.genFailResult("插入openidPhone表失败");
+            }
+
+            // 注册顾客
+            String result = consumerService.add(openidPhone.getPhone(),"12345678","12345678");
+            if(!result.equals("success")){
+                return ResultGenerator.genFailResult(500, result);
+            }
+        }
+        String result = consumerService.login(openidPhone.getPhone(),"12345678");
+        return ResultGenerator.genSuccessResult(result);
+    }
+
 
     @PostMapping("/status/change")
     @ApiOperation(value = "用户状态改变（状态，手机号）")

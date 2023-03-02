@@ -5,7 +5,9 @@ import com.example.nft.dao.OperatorMapper;
 import com.example.nft.dao.StoreMapper;
 import com.example.nft.entity.Operator;
 import com.example.nft.entity.Store;
+import com.example.nft.entity.StoreSetting;
 import com.example.nft.service.OperatorService;
+import com.example.nft.service.StoreSettingService;
 import com.example.nft.service.ex.InsertException;
 import com.example.nft.service.ex.SelectException;
 import com.example.nft.service.ex.UpdateException;
@@ -39,6 +41,9 @@ public class OperatorServiceImpl implements OperatorService {
 
     @Resource
     private RedisUtil redisUtil;
+
+    @Resource
+    private StoreSettingService storeSettingService;
 
     @Override
     public String add(Operator operator) {
@@ -91,11 +96,16 @@ public class OperatorServiceImpl implements OperatorService {
         String token =  JwtUtil.genToken(operatorPhone);
         // 生成的token保存在redis中，key为店铺uuid拼接上用户手机号
         redisUtil.set(operatorPhone,token,60*60*24);
+        // 获取配置
+        StoreSetting setting =  storeSettingService.findByStore(operatorBelong);
+
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("token", token);
         dbRes.setOperatorPassword("");
         map.put("operator", dbRes.getOperatorPhone());
         map.put("store", store.getStoreUuid());
+        map.put("setting", setting);
         return map;
     }
 

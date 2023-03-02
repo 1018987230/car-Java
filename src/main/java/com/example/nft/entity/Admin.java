@@ -11,4 +11,6 @@ public class Admin {
     private String adminPassword;
     private String adminName;
     private Integer isDelete;
+
+
 }

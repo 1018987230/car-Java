@@ -276,10 +276,10 @@ public class OrderServiceImpl implements OrderService {
         }
         Integer sum = orderMapper.selectCount(storeUuid);
 
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("list", dbRes);
         map.put("sum",sum);
-
 
         return map;
     }
@@ -300,5 +300,6 @@ public class OrderServiceImpl implements OrderService {
         }
         return "异常状态";
     }
+
 
 }

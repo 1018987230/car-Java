@@ -2,6 +2,7 @@ package com.example.nft.controller;
 
 import com.example.nft.controller.param.BalanceParam;
 import com.example.nft.controller.param.PageParam;
+import com.example.nft.dao.ConsumerMapper;
 import com.example.nft.entity.ConsumerBalance;
 import com.example.nft.service.ConsumerBalanceService;
 import com.example.nft.utils.Result;
@@ -23,6 +24,9 @@ public class ConsumerBalanceController extends BaseController{
 
     @Resource
     private ConsumerBalanceService consumerBalanceService;
+
+    @Resource
+    private ConsumerMapper consumerMapper;
 
     @PostMapping("/money/change")
     public Result moneyChange(@RequestBody BalanceParam balanceParam){
@@ -54,7 +58,16 @@ public class ConsumerBalanceController extends BaseController{
 
     @PostMapping("/change")
     public Result change(@RequestBody BalanceParam balanceParam){
-        String result = consumerBalanceService.change(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid() ,balanceParam.getCostMoney(), balanceParam.getCostService1(), balanceParam.getCostService2(),
+        String result;
+        if(balanceParam.getConsumerUuid() != null){
+            // uuid转为手机号
+            String phone = consumerMapper.selectByUuid(balanceParam.getConsumerUuid()).getConsumerPhone();
+            result = consumerBalanceService.change(phone, balanceParam.getStoreUuid() ,balanceParam.getCostMoney(), balanceParam.getCostService1(), balanceParam.getCostService2(),
+                    balanceParam.getCostService3(),balanceParam.getCostService4(),balanceParam.getCostService5());
+            return ResultGenerator.genSuccessResult(result);
+        }
+
+        result = consumerBalanceService.change(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid() ,balanceParam.getCostMoney(), balanceParam.getCostService1(), balanceParam.getCostService2(),
                 balanceParam.getCostService3(),balanceParam.getCostService4(),balanceParam.getCostService5());
         return ResultGenerator.genSuccessResult(result);
     }

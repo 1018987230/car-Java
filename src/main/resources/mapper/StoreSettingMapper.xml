@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.StoreSettingMapper">
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.StoreSetting">
+        <id column="setting_id" property="settingId"/>
+        <result column="store_uuid" property="storeUuid"/>
+        <result column="service_name1" property="serviceName1"/>
+        <result column="service_name2" property="serviceName2"/>
+        <result column="service_name3" property="serviceName3"/>
+        <result column="service_name4" property="serviceName4"/>
+        <result column="service_name5" property="serviceName5"/>
+        <result column="setting1" property="setting1"/>
+        <result column="setting2" property="setting2"/>
+        <result column="setting3" property="setting3"/>
+        <result column="setting4" property="setting4"/>
+        <result column="setting5" property="setting5"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.nft.entity.StoreSetting">
+        INSERT t_store_setting (store_uuid)
+                    VALUES (#{storeUuid})
+    </insert>
+
+
+    <update id="updateSetting" parameterType="com.example.nft.entity.StoreSetting">
+        update t_store_setting
+        <set>
+            <if test="serviceName1 != null and serviceName1 != '' ">
+                service_name1=#{serviceName1}
+            </if>
+            <if test="serviceName2 != null and serviceName2 != ''">
+                , service_name2=#{serviceName2}
+            </if>
+            <if test="serviceName3 != null and serviceName3 != ''">
+                , service_name3=#{serviceName3}
+            </if>
+            <if test="serviceName4 != null and serviceName4 != ''">
+                , service_name4=#{serviceName4}
+            </if>
+            <if test="serviceName5 != null and serviceName5 != ''">
+                , service_name5=#{serviceName5}
+            </if>
+        </set>
+        where store_uuid=#{storeUuid}
+    </update>
+
+
+    <select id="select" resultMap="BaseResultMap">
+        select * from t_store_setting where store_uuid=#{store_uuid}
+
+    </select>
+
+
+</mapper>

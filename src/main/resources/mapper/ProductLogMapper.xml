@@ -28,8 +28,9 @@
     <select id="selectMany" resultMap="BaseResultMap">
         select <include refid="Base_List"></include> from t_product_log
         <where>
+            store_uuid=#{storeUuid}
             <if test="productName != null and productName != ''">
-                product_name like concat('%',#{productName},'%')
+                and product_name like concat('%',#{productName},'%')
             </if>
 
         </where>
@@ -40,8 +41,9 @@
     <select id="selectCount" resultType="java.lang.Integer">
         select count(*) from t_product_log
         <where>
+            store_uuid=#{storeUuid}
             <if test="productName != null and productName != ''">
-                product_name like concat('%',#{productName},'%')
+                and product_name like concat('%',#{productName},'%')
             </if>
         </where>
 

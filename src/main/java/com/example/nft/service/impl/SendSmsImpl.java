@@ -35,7 +35,7 @@ public class SendSmsImpl implements SendSms {
         request.setAction("SendSms");
 
         //自定义信息
-        request.putQueryParameter("PhoneNumbers", "13597503951"); //发送至手机号
+        request.putQueryParameter("PhoneNumbers", PhoneNumbers); //发送至手机号
         request.putQueryParameter("SignName", "乘黄汽车系统");  //自己配置的短信签名
         request.putQueryParameter("TemplateCode", "SMS_268700861"); //自己配置的模板 模版CODE
 

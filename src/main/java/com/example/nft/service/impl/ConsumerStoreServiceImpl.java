@@ -92,14 +92,15 @@ public class ConsumerStoreServiceImpl implements ConsumerStoreService {
 
         // 用户加入店铺时，需要创建账户余额
 
-        // 判断店铺中是否已经存在账户
+        // 判断店铺中是否已经存在账户，查询客户是否加入过店铺，状态为0和1的都要查询，有一个不为空就不插入
         if(consumerBalanceMapper.selectByPhoneStore(storeUuid, consumer.getConsumerPhone(),NORMAL_BALANCE_STATUS) == null && consumerBalanceMapper.selectByPhoneStore(storeUuid, consumer.getConsumerPhone(),ABNORMAL_BALANCE_STATUS) == null){
             // 插入账户
             if(!consumerBalanceMapper.insertBalance(storeUuid, consumer.getConsumerPhone())){
                 throw new InsertException(ServiceResultEnum.BALANCE_INSERT_ERROR.getResult());
             }
         }
-
+        // 改变状态，置为0
+        consumerBalanceMapper.updateStatus(consumer.getConsumerPhone(),storeUuid, NORMAL_BALANCE_STATUS);
 
         logger.info("店铺和用户建立联系：" + "consumerId: " + consumerUuid + "storeId: " + storeUuid );
         return  ServiceResultEnum.SUCCESS.getResult();
