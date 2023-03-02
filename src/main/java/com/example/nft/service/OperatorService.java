@@ -4,6 +4,7 @@ import com.example.nft.entity.Operator;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author wangyixiong
@@ -30,6 +31,13 @@ public interface OperatorService {
      * @return
      */
     HashMap<String,Object> login(String operatorBelong, String operatorPhone, String operatorPassword);
+
+    /**
+     * 获取操作员列表
+     * @param storeUuid
+     * @return
+     */
+    List<Operator> findMany(String storeUuid);
 
 
     /**

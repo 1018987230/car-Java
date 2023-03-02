@@ -5,13 +5,11 @@ import com.example.nft.entity.Operator;
 import com.example.nft.service.OperatorService;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author wangyixiong
@@ -37,6 +35,7 @@ public class OperatorController extends BaseController{
         return ResultGenerator.genSuccessResult(result);
     }
 
+
     @PostMapping("/login")
     public Result login(@RequestBody OperatorParam operatorParam){
         HashMap<String, Object> result = operatorService.login(operatorParam.getOperatorBelong(),operatorParam.getOperatorPhone(), operatorParam.getOperatorPassword());
@@ -44,12 +43,34 @@ public class OperatorController extends BaseController{
         return ResultGenerator.genSuccessResult(result);
     }
 
+
+    @GetMapping("/findMany/{storeUuid}")
+    public Result findMany(@PathVariable("storeUuid") String storeUuid){
+
+        List<Operator> result = operatorService.findMany(storeUuid);
+
+        return ResultGenerator.genSuccessResult(result);
+    }
+
+    /**
+     * 改变操作员的status
+     * @param operatorParam
+     * @return
+     */
     @PostMapping("/statusChange")
     public Result statusChange(@RequestBody OperatorParam operatorParam){
+
+
         String result = operatorService.changeStatus(operatorParam.getOperatorBelong(),operatorParam.getOperatorPhone(), operatorParam.getOperatorStatus());
         return ResultGenerator.genSuccessResult(result);
     }
 
+
+    /**
+     * 修改密码
+     * @param operatorParam
+     * @return
+     */
     @PostMapping("/passwordChange")
     public Result passwordChange(@RequestBody OperatorParam operatorParam){
         String result = operatorService.changePassword(operatorParam.getOperatorBelong(),operatorParam.getOperatorPhone(), operatorParam.getOperatorPassword(), operatorParam.getNewPassword());

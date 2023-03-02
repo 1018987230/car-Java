@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author wangyixiong
@@ -48,7 +49,7 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public String add(Operator operator) {
         // 根据操作员所属店铺和手机号查询是否存在此人
-        if(operatorMapper.selectByPhoneAndUuid(operator.getOperatorBelong(),operator.getOperatorPhone()) != null){
+        if(operatorMapper.selectByPhoneAndUuid(operator.getOperatorBelong(),operator.getOperatorPhone(),0) != null){
             throw new InsertException(ServiceResultEnum.DB_EXIST.getResult());
         }
 
@@ -74,7 +75,7 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public HashMap<String, Object> login(String operatorBelong, String operatorPhone, String operatorPassword) {
         // 根据操作员所属店铺和手机号查询是否存在此人
-        Operator dbRes = operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone);
+        Operator dbRes = operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone,0);
         Store store = storeMapper.selectByUuid(operatorBelong);
 
         if(dbRes == null){
@@ -110,12 +111,19 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
+    public List<Operator> findMany(String storeUuid) {
+        return operatorMapper.selectMany(storeUuid);
+    }
+
+
+    @Override
     public String changeStatus(String operatorBelong, String operatorPhone, Integer operatorStatus) {
         // 根据操作员所属店铺和手机号查询是否存在此人
-        Operator dbRes = operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone);
-        if(dbRes == null){
+
+        if(operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone,0)==null && operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone,1) == null){
             throw new InsertException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
+        System.out.println(operatorStatus);
         if(operatorMapper.updateStatusByPhoneAndUuid(operatorBelong,operatorPhone,operatorStatus) == 0){
             throw new UpdateException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
         }
@@ -127,7 +135,7 @@ public class OperatorServiceImpl implements OperatorService {
     public String changePassword(String operatorBelong, String operatorPhone, String oldPassword , String newPassword) {
 
         // 根据操作员所属店铺和手机号查询是否存在此人
-        Operator dbRes = operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone);
+        Operator dbRes = operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone,0);
         if(dbRes == null){
             throw new InsertException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
@@ -148,11 +156,11 @@ public class OperatorServiceImpl implements OperatorService {
         String operatorPassword = dbRes.getOperatorSalt() + newPassword;
         operatorPassword = MD5Util.passwordMD5(operatorPassword);
 
-        //更新密码
+        //更新密码 0b3dd16df5fab240c2516e19078ea737
         if(operatorMapper.updatePasswordByPhoneAndUuid(operatorBelong,operatorPhone,operatorPassword) == 0){
             throw new UpdateException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
         }
-
+        System.out.println(operatorPassword);
         return ServiceResultEnum.SUCCESS.getResult();
     }
 }

@@ -3,6 +3,8 @@ package com.example.nft.dao;
 import com.example.nft.entity.Operator;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @Author wangyixiong
  * @Date 2022/11/27 下午10:09
@@ -27,7 +29,10 @@ public interface OperatorMapper {
      * @param operatorPhone
      * @return
      */
-    Operator selectByPhoneAndUuid(String operatorBelong, String operatorPhone);
+    Operator selectByPhoneAndUuid(String operatorBelong, String operatorPhone, Integer operatorStatus);
+
+
+    List<Operator> selectMany(String operator);
 
     /**
      * 根据手机号，属于的店铺uuid，更新店铺操作员状态

@@ -43,11 +43,11 @@ CREATE TABLE `t_store_setting` (
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 
---operator 店铺管理员表
+--operator 店铺管理员表，
 CREATE TABLE `t_operator` (
    `operator_id` int NOT NULL AUTO_INCREMENT COMMENT '操作员id',
    `operator_belong` varchar(50) NOT NULL  COMMENT '操作员隶属于店铺',
-   `operator_level` varchar(256) NOT NULL DEFAULT '店员' COMMENT '操作员等级',
+   `operator_level` int NOT NULL DEFAULT 0 COMMENT '操作员等级:0: 一级管理员，1：二级管理员',
    `operator_phone` varchar(50) NOT NULL COMMENT '操作员账号',
    `operator_salt` varchar(5) NOT NULL DEFAULT '00000' COMMENT '盐值加密',
    `operator_password` varchar(256) NOT NULL  COMMENT '操作员密码',

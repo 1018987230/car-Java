@@ -14,6 +14,10 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
 
+    <sql id="Base_List">
+        operator_belong,operator_level,operator_phone,operator_name,operator_status,create_time
+    </sql>
+
     <insert id="insert" parameterType="com.example.nft.entity.Operator" >
         INSERT t_operator (operator_belong,operator_level,operator_phone, operator_salt, operator_password, operator_name)
                     VALUES (#{operatorBelong},#{operatorLevel},#{operatorPhone}, #{operatorSalt}, #{operatorPassword},#{operatorName})
@@ -21,11 +25,24 @@
     </insert>
 
     <select id="selectByPhoneAndUuid" resultMap="BaseResultMap">
-        SELECT * FROM t_operator WHERE operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone} and operator_status = 0
+        SELECT <include refid="Base_List"/>,operator_salt, operator_password FROM t_operator
+        <where>
+            operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone}
+            <if test="operatorStatus != '' and operatorStatus != null">
+                and operator_status = #{}operatorStatus}
+            </if>
+        </where>
+
     </select>
 
+    <select id="selectMany" resultMap="BaseResultMap">
+        SELECT <include refid="Base_List"/> FROM t_operator WHERE operator_belong=#{operatorBelong}
+    </select>
+
+
+
     <update id="updateStatusByPhoneAndUuid">
-        update t_operator set operator_status=#{operatorStatus} where operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone} and operator_status = 0
+        update t_operator set operator_status=#{operatorStatus} where operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone}
     </update>
 
     <update id="updatePasswordByPhoneAndUuid">
