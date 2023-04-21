@@ -27,10 +27,8 @@
     <select id="selectByPhoneAndUuid" resultMap="BaseResultMap">
         SELECT <include refid="Base_List"/>,operator_salt, operator_password FROM t_operator
         <where>
-            operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone}
-            <if test="operatorStatus != '' and operatorStatus != null">
-                and operator_status = #{}operatorStatus}
-            </if>
+            operator_belong=#{operatorBelong} and operator_phone=#{operatorPhone} and operator_status = #{operatorStatus}
+
         </where>
 
     </select>

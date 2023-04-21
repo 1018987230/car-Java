@@ -10,16 +10,16 @@ import com.example.nft.entity.Consumer;
 import com.example.nft.entity.OpenidPhone;
 import com.example.nft.service.ConsumerService;
 import com.example.nft.service.OpenidPhoneService;
+import com.example.nft.service.ex.SelectException;
+import com.example.nft.utils.JwtUtil;
+import com.example.nft.utils.RedisUtil;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -36,6 +36,9 @@ public class ConsumerController extends BaseController {
     @Resource
     private OpenidPhoneService openidPhoneService;
 
+
+    @Resource
+    private RedisUtil redisUtil;
 
     @PostMapping("/login")
     @ApiOperation(value="用户登录")
@@ -63,7 +66,7 @@ public class ConsumerController extends BaseController {
     public synchronized Result wxAdd(@RequestBody OpenidPhone openidPhone){
         System.out.println(openidPhone);
 
-        if(openidPhoneService.findByOpenId(openidPhone.getOpenid()).equals("success")){
+        if(openidPhoneService.findByOpenId(openidPhone.getOpenid()) == null){
             // openid为空时，进行插入操作
             if(!openidPhoneService.add(openidPhone).equals("success")){
                 return ResultGenerator.genFailResult("插入openidPhone表失败");
@@ -75,9 +78,23 @@ public class ConsumerController extends BaseController {
                 return ResultGenerator.genFailResult(500, result);
             }
         }
-        String result = consumerService.login(openidPhone.getPhone(),"12345678");
-        return ResultGenerator.genSuccessResult(result);
+        String result = openidPhoneService.findByOpenId(openidPhone.getOpenid()).getPhone();
+        if(!result.equals(openidPhone.getPhone())){
+            throw new SelectException("微信与手机号不匹配");
+        }
+        return ResultGenerator.genSuccessResult();
     }
+
+    @GetMapping("/wx/getToken/{phone}")
+    public Result getToken(@PathVariable("phone") String phone){
+
+        String token =  JwtUtil.genToken(phone);
+        // 生成的token保存在redis中，key为店铺uuid拼接上用户手机号
+        redisUtil.set(phone,token,60*60*24);
+        return ResultGenerator.genSuccessResult(token);
+    }
+
+
 
 
     @PostMapping("/status/change")

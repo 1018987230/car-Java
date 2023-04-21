@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 // 先关闭
-//@Configuration
+@Configuration
 public class LoginConfig implements WebMvcConfigurer {
 
     @Override
@@ -16,7 +16,12 @@ public class LoginConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/**");
         registration.excludePathPatterns(
                 "/api/operator/login",
-                "/api/admin/register"
+                "/api/wx/**",
+                "/api/admin/register",
+                "/api/consumer/wx/**",
+                "/api/consumer/wx/getToken/**",
+                "/api/store/**",  // 暂时这样，后面新建主端后取消
+                "/api/operator/add"
         );
     }
 }

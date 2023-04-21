@@ -23,4 +23,11 @@ public interface StoreService {
      */
     List<Store> findStoreByName(String storeName);
 
+    /**
+     * 根据店铺uuid查询其信息
+     * @param storeUuid
+     * @return
+     */
+    Store findStoreByUuid(String storeUuid);
+
 }

@@ -2,6 +2,8 @@ package com.example.nft.controller;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Author wangyixiong
  * @Date 2022/11/6 下午4:22
@@ -11,7 +13,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
-public class RegisterParam {
+public class RegisterParam implements Serializable {
 
     private String account;
     private String password;

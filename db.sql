@@ -243,11 +243,11 @@ CREATE TABLE `t_product_log`(
 
 --人员变动记录
 CREATE TABLE `t_consumer_log`(
-                                 `consumer_log_id` int NOT NULL  AUTO_INCREMENT COMMENT '车主id' ,
-                                 `consumer_log_phone` varchar(50) NOT NULL COMMENT '消费车主的手机',
-                                 `consumer_log_type` varchar(50) NOT NULL COMMENT '顾客增加还是删除',
-                                 `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                 PRIMARY KEY (`consumer_log_id`)
+     `consumer_log_id` int NOT NULL  AUTO_INCREMENT COMMENT '车主id' ,
+     `consumer_log_phone` varchar(50) NOT NULL COMMENT '消费车主的手机',
+     `consumer_log_type` varchar(50) NOT NULL COMMENT '顾客增加还是删除',
+     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+     PRIMARY KEY (`consumer_log_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 

@@ -2,6 +2,8 @@ package com.example.nft.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author ：bbdxgg
  * @date ：Created By 2022/12/30 下午1:34
@@ -10,7 +12,7 @@ import lombok.Data;
  * @version: $
  */
 @Data
-public class Product {
+public class Product  implements Serializable {
 
     private Integer productId;
     private String storeUuid;

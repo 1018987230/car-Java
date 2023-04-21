@@ -25,14 +25,14 @@ public class JwtUtil {
      * @param
      * @return
      * */
-    public static String genToken(String user) {
+    public static String genToken(String info) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
 
             return JWT.create()
                     //将userId保存到token里面
-                    .withAudience(user)
+                    .withAudience(info)
                     //存放自定义数据
 //                    .withClaim("store", store)
                     //五分钟后token过期

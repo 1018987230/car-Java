@@ -55,4 +55,10 @@ public class StoreServiceImpl implements StoreService {
 
         return storeMapper.selectStoreByName(storeName);
     }
+
+
+    public Store findStoreByUuid(String storeUuid){
+
+        return storeMapper.selectByUuid(storeUuid);
+    }
 }

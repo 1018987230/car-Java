@@ -16,7 +16,7 @@ public class Operator {
 
     private String operatorBelong;
 
-    private String operatorLevel;
+    private Integer operatorLevel;
 
     private String operatorPhone;
 

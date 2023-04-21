@@ -1,5 +1,7 @@
 package com.example.nft.Handler;
 
+import com.example.nft.commons.AgentThreadLocal;
+import com.example.nft.entity.Store;
 import com.example.nft.service.ex.LoginException;
 import com.example.nft.utils.JwtUtil;
 import com.example.nft.utils.RedisUtil;
@@ -45,11 +47,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         RedisUtil redisUtil = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext()).getBean(RedisUtil.class);
         //验证通过后， 这里测试取出JWT中存放的数据
         //获取 token 中的 userId
-        String userId = JwtUtil.getUser(token);
+        String info = JwtUtil.getUser(token);
 //        String storeId = JwtUtil.getStore(token);
         // 生成的token保存在redis中，key为店铺uuid拼接上用户手机号
 //        Object token_2 =  redisUtil.get(storeId + userId);
-        Object token_2 =  redisUtil.get(userId);
+        Object token_2 =  redisUtil.get(info);
         System.out.println(token_2);
         if(token_2 == null){
             throw new LoginException("token不存在");
@@ -57,6 +59,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(!token_2.equals(token)){
             throw new LoginException("token值无效");
         }
+
+        AgentThreadLocal.set(info);
+
         return true;
 
 

@@ -32,6 +32,11 @@ public interface OperatorMapper {
     Operator selectByPhoneAndUuid(String operatorBelong, String operatorPhone, Integer operatorStatus);
 
 
+    /**
+     *
+     * @param operator
+     * @return
+     */
     List<Operator> selectMany(String operator);
 
     /**

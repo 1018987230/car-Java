@@ -37,6 +37,7 @@
     <select id="selectByUuid" resultMap="BaseResultMap">
         select * from t_store where store_uuid = #{storeUuid} and  store_status = 0;
     </select>
+
     <select id="selectById" resultMap="BaseResultMap">
         select * from t_store where store_id = #{selectById} and  store_status = 0;
     </select>

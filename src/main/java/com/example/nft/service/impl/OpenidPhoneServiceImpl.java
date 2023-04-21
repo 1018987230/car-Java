@@ -35,10 +35,10 @@ public class OpenidPhoneServiceImpl implements OpenidPhoneService {
     }
 
     @Override
-    public String findByOpenId(String openid) {
+    public OpenidPhone findByOpenId(String openid) {
         if(openidPhoneMapper.selectByOpenid(openid) == null){
-            return ServiceResultEnum.SUCCESS.getResult();
+            return null;
         }
-        return ServiceResultEnum.DB_EXIST.getResult();
+        return openidPhoneMapper.selectByOpenid(openid);
     }
 }

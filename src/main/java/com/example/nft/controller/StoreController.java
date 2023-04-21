@@ -1,6 +1,7 @@
 package com.example.nft.controller;
 
 
+import com.example.nft.commons.AgentThreadLocal;
 import com.example.nft.controller.param.StoreParam;
 import com.example.nft.entity.Consumer;
 import com.example.nft.entity.Store;
@@ -10,10 +11,7 @@ import com.example.nft.utils.ResultGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -60,6 +58,14 @@ public class StoreController extends BaseController {
     @ApiOperation(value="根据店铺名称查询")
     public Result findByName(@RequestBody StoreParam storeParam) {
         List<Store> result = storeService.findStoreByName(storeParam.getStoreName());
+        return ResultGenerator.genSuccessResult(result);
+    }
+
+
+    @PostMapping("/findByUuid/{storeUuid}")
+    @ApiOperation(value="根据uuid查询店铺信息")
+    public Result findByUuid(@PathVariable("storeUuid") String storeUuid  ){
+        Store result = storeService.findStoreByUuid(storeUuid);
         return ResultGenerator.genSuccessResult(result);
     }
 

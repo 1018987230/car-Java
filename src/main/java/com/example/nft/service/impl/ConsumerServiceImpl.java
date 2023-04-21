@@ -111,9 +111,6 @@ public class ConsumerServiceImpl implements ConsumerService {
             throw new SelectException(ServiceResultEnum.DB_PASSWORD_ERROR.getResult());
         }
 
-
-
-
         return ServiceResultEnum.SUCCESS.getResult();
     }
 

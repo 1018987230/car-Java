@@ -17,8 +17,6 @@ public interface StoreMapper {
     // 通过店铺名字查询店铺(以后会用上模糊查询 肯定是个列表)
     List<Store> selectStoreByName(String storeName);
 
-    Store selectById(Integer storeId);
-
     /**
      * 根据uuid查询店铺
      * @param storeUuid

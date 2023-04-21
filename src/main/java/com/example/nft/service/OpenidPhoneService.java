@@ -15,5 +15,5 @@ import org.springframework.stereotype.Service;
 public interface OpenidPhoneService {
     String add(OpenidPhone openidPhone);
 
-    String findByOpenId(String openid);
+    OpenidPhone findByOpenId(String openid);
 }

@@ -1,5 +1,6 @@
 package com.example.nft.controller;
 
+import com.example.nft.commons.AgentThreadLocal;
 import com.example.nft.controller.param.OperatorParam;
 import com.example.nft.entity.Operator;
 import com.example.nft.service.OperatorService;
@@ -60,7 +61,7 @@ public class OperatorController extends BaseController{
     @PostMapping("/statusChange")
     public Result statusChange(@RequestBody OperatorParam operatorParam){
 
-
+        System.out.println("+++" + AgentThreadLocal.get());
         String result = operatorService.changeStatus(operatorParam.getOperatorBelong(),operatorParam.getOperatorPhone(), operatorParam.getOperatorStatus());
         return ResultGenerator.genSuccessResult(result);
     }

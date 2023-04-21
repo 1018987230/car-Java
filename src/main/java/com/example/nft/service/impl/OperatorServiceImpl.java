@@ -1,5 +1,6 @@
 package com.example.nft.service.impl;
 
+import com.example.nft.commons.AgentThreadLocal;
 import com.example.nft.commons.ServiceResultEnum;
 import com.example.nft.dao.OperatorMapper;
 import com.example.nft.dao.StoreMapper;
@@ -76,6 +77,8 @@ public class OperatorServiceImpl implements OperatorService {
     public HashMap<String, Object> login(String operatorBelong, String operatorPhone, String operatorPassword) {
         // 根据操作员所属店铺和手机号查询是否存在此人
         Operator dbRes = operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone,0);
+
+
         Store store = storeMapper.selectByUuid(operatorBelong);
 
         if(dbRes == null){
@@ -97,6 +100,7 @@ public class OperatorServiceImpl implements OperatorService {
         String token =  JwtUtil.genToken(operatorPhone);
         // 生成的token保存在redis中，key为店铺uuid拼接上用户手机号
         redisUtil.set(operatorPhone,token,60*60*24);
+
         // 获取配置
         StoreSetting setting =  storeSettingService.findByStore(operatorBelong);
 
@@ -118,12 +122,17 @@ public class OperatorServiceImpl implements OperatorService {
 
     @Override
     public String changeStatus(String operatorBelong, String operatorPhone, Integer operatorStatus) {
-        // 根据操作员所属店铺和手机号查询是否存在此人
 
+        // 根据操作员所属店铺和手机号查询是否存在此人
         if(operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone,0)==null && operatorMapper.selectByPhoneAndUuid(operatorBelong, operatorPhone,1) == null){
             throw new InsertException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
-        System.out.println(operatorStatus);
+        // 判断是否是店主删除自己的账号，不被允许的操作
+        if(operatorPhone.equals(AgentThreadLocal.get())){
+            throw new UpdateException("无法操作自己的状态！");
+        }
+
+        // 更新操作员状态
         if(operatorMapper.updateStatusByPhoneAndUuid(operatorBelong,operatorPhone,operatorStatus) == 0){
             throw new UpdateException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
         }

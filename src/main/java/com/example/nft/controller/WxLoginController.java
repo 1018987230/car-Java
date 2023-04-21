@@ -1,11 +1,10 @@
 package com.example.nft.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.nft.utils.HttpRequest;
-import com.example.nft.utils.Result;
-import com.example.nft.utils.ResultGenerator;
+import com.example.nft.utils.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 
 /**
@@ -20,6 +19,9 @@ import java.util.HashMap;
 @RequestMapping("/api/wx")
 public class WxLoginController {
 
+
+    @Resource
+    private RedisUtil redisUtil;
 
     /**
      * 微信登录获取openid，但不是服务器登录
@@ -49,14 +51,17 @@ public class WxLoginController {
         //用户的唯一标识（openid）
         String openid = (String) json.get("openid");
 
+        //生成token验证
+        String token =  JwtUtil.genToken(openid);
+        // 生成的token保存在redis中，key为店铺uuid拼接上用户手机号
+        redisUtil.set(openid,token,60*60*24);
+
         HashMap<String, String> map = new HashMap<>();
         map.put("session_key", session_key);
         map.put("openid", openid);
-
+        map.put("token",token);
         return ResultGenerator.genSuccessResult(map);
     }
-
-
 
 }
 

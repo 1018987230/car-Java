@@ -22,8 +22,6 @@ public class BalanceLogController extends BaseController {
     @Resource
     private BalanceLogService balanceLogService;
 
-    @Resource
-    private BalanceLogMapper balanceLogMapper;
 
     @PostMapping("/find")
     public Result find(@RequestBody BalanceLogParam balanceLogParam){

@@ -15,6 +15,10 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
 
+<!--  开启基于redis的二级缓存  -->
+    <cache type="com.example.nft.commons.MybatisRedisCache"></cache>
+    <cache/>
+
     <sql id="Base_List">
         store_uuid, product_uuid, product_name, product_quantity, product_unit, product_price, product_in,create_time
     </sql>
