@@ -7,6 +7,7 @@ import com.example.nft.entity.Consumer;
 import com.example.nft.entity.Store;
 import com.example.nft.service.ConsumerService;
 import com.example.nft.service.ex.*;
+import com.example.nft.utils.JwtUtil;
 import com.example.nft.utils.MD5Util;
 import com.example.nft.utils.RedisUtil;
 import org.slf4j.Logger;
@@ -111,7 +112,10 @@ public class ConsumerServiceImpl implements ConsumerService {
             throw new SelectException(ServiceResultEnum.DB_PASSWORD_ERROR.getResult());
         }
 
-        return ServiceResultEnum.SUCCESS.getResult();
+        Object token = JwtUtil.genToken(consumerPhone);
+        redisUtil.set(consumerPhone,token,60*60*24);
+        return (String) token;
+
     }
 
     /**

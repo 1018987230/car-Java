@@ -91,6 +91,7 @@ public class NoticeServiceImpl implements NoticeService {
         if(dbRes == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
+
         return dbRes;
     }
 
@@ -102,12 +103,14 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     public List<Notice> findByConsumerUuid(String consumerUuid, Integer currentPage) {
+        List<Notice> noticeList = noticeMapper.selectByConsumerUuid(consumerUuid, (currentPage - 1) * 20);
 
-        return noticeMapper.selectByConsumerUuid(consumerUuid, (currentPage-1)*20);
+        return noticeList;
     }
 
     /**
      * 通过店铺id查询用户发出的通知和接受的通知
+     *
      * @param
      * @return
      */

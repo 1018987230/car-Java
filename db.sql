@@ -4,7 +4,7 @@ CREATE TABLE `t_admin` (
    `admin_phone` varchar(50) NOT NULL UNIQUE COMMENT '管理员邮箱',
    `admin_password` varchar(256) NOT NULL COMMENT '管理员密码',
    `admin_name` varchar(50) NOT NULL COMMENT '管理员昵称',
-   `is_delete` int DEFAULT '0' COMMENT '0：未删除，1：已删除',
+   `is` varchar(50) NOT NULL COMMENT '',
    PRIMARY KEY (`admin_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
@@ -83,8 +83,6 @@ CREATE TABLE `t_consumer`(
     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`consumer_id`)
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
-
-
 
 
 

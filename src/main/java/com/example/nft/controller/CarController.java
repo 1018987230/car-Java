@@ -31,6 +31,7 @@ public class CarController extends BaseController{
     @ApiOperation(value = "用户添加车辆")
     public Result add(@RequestBody Car car){
         String result = carService.add(car);
+
         return ResultGenerator.genSuccessResult(result);
     }
 

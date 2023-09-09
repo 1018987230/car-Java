@@ -32,6 +32,14 @@ public class BalanceLogController extends BaseController {
     }
 
 
+    @PostMapping("/add")
+    public Result add(@RequestBody BalanceLogParam balanceLogParam){
+
+//        balanceLogService.insertLog(balanceLogParam.getBalanceLogStore(),)
+
+        return ResultGenerator.genSuccessResult();
+    }
+
     /**
      * @param balanceLogParam
      * @return

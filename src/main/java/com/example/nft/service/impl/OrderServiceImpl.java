@@ -93,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
         notice.setNoticeFrom(orderConsumerUuid);
         notice.setNoticeTo(orderStoreUuid);
         notice.setNoticeTitle(NOTICE_TITLE);
-        notice.setNoticeContent("用户 "+consumer.getConsumerName() + consumer.getConsumerUuid() + ""+ " 发起订单： " + orderUuid);
+        notice.setNoticeContent("手机号为：" + consumer.getConsumerPhone() + "的用户"+ "发起订单！请即时查看！订单号为：" + orderUuid + "。");
 
         if(noticeMapper.insertNotice(notice) == 0){
             throw new InsertException(ServiceResultEnum.ORDER_INSERT_ERROR.getResult());
@@ -166,6 +166,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 根据orderConsumerId找出用户信息
         Consumer consumer = consumerMapper.selectByUuid(order.getOrderConsumerUuid());
+        Store store = storeMapper.selectByUuid(order.getOrderStoreUuid());
 
         System.out.println(consumer);
         // 5. 生成通知，给请求的店铺发送通知信息
@@ -174,9 +175,11 @@ public class OrderServiceImpl implements OrderService {
         notice.setNoticeUuid(noticeUuid);
         notice.setNoticeFrom(order.getOrderConsumerUuid());
         notice.setNoticeTo(order.getOrderStoreUuid());
+//        notice.setNoticeFrom(consumer.getConsumerPhone());
+//        notice.setNoticeTo(store.getStoreName());
         notice.setNoticeTitle(NOTICE_TITLE);
         String text = numToText(orderStatus);
-        notice.setNoticeContent("订单号：" + noticeUuid + " 的状态发生改变，当前状态："+ text);
+        notice.setNoticeContent("订单号：" + orderUuid + " 状态发生改变，请及时查收。当前状态："+ text);
 
         if(noticeMapper.insertNotice(notice) == 0){
             throw new InsertException(ServiceResultEnum.ORDER_INSERT_ERROR.getResult());
@@ -271,11 +274,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public HashMap<String, Object> findByStoreUuid(String storeUuid, Integer currentPage) {
         List<Order> dbRes = orderMapper.selectByStoreUuid(storeUuid,(currentPage-1)*20);
+
         if(dbRes == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
-        Integer sum = orderMapper.selectCount(storeUuid);
+        for (Order order : dbRes) {
+            order.setOrderStatus(numToText(Integer.parseInt(order.getOrderStatus())));
+        }
 
+        Integer sum = orderMapper.selectCount(storeUuid);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("list", dbRes);

@@ -1,4 +1,4 @@
-package com.example.nft.controller;
+package com.example.nft.controller.param;
 
 import lombok.Data;
 

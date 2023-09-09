@@ -21,8 +21,6 @@ import javax.annotation.Resource;
 @RequestMapping("/api/storeSetting")
 public class StoreSettingController {
 
-    @Resource
-    private StoreSettingMapper storeSettingMapper;
 
     @Resource
     private StoreSettingService storeSettingService;

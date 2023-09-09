@@ -6,7 +6,9 @@ import com.example.nft.entity.Consumer;
 import com.example.nft.entity.ConsumerBalance;
 import com.example.nft.entity.Store;
 import com.example.nft.service.ConsumerBalanceService;
+import com.example.nft.service.ConsumerService;
 import com.example.nft.service.ConsumerStoreService;
+import com.example.nft.service.ex.SelectException;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
 import io.swagger.annotations.Api;
@@ -33,11 +35,29 @@ public class ConsumerStoreController {
     @Resource
     private ConsumerBalanceService consumerBalanceService;
 
+    @Resource
+    private ConsumerService consumerService;
+
     private static final Integer NORMAL_STATUS = 0;
 
     private static final Integer ABNORMAL_STATUS = 1;
 
 
+    // 店铺顾客建立联系接口
+    @PostMapping("/add2")
+    @ApiOperation(value = "店铺顾客建立联系")
+    public Result consumerAndStore2(@RequestBody ConsumerStoreParam consumerStoreParam){
+
+        String phone = consumerStoreParam.getPhone();
+        Consumer consumer = consumerService.findByPhone(phone);
+        if(consumer == null){
+            throw new SelectException("用户不存在");
+        }
+        String result = consumerStoreService.ConsumerAndStore(consumer.getConsumerUuid(),consumerStoreParam.getStoreUuid());
+        // 将店铺中用户的账户状态改变，初次建立联系默认为‘0’，多一步状态置为0操作但是无影响，若之前有建立且状态已为1，置为0，成功
+
+        return ResultGenerator.genSuccessResult(result);
+    }
 
 
     // 店铺顾客建立联系接口
@@ -50,7 +70,6 @@ public class ConsumerStoreController {
         if(!consumerBalanceService.statusChange(consumerStoreParam.getConsumerUuid(),consumerStoreParam.getStoreUuid(), NORMAL_STATUS).equals("success")){
             return ResultGenerator.genFailResult("账户状态改变失败！");
         }
-
         return ResultGenerator.genSuccessResult(result);
     }
 

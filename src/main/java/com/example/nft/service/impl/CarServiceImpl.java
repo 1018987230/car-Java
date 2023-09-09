@@ -1,5 +1,6 @@
 package com.example.nft.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.nft.commons.ServiceResultEnum;
 import com.example.nft.controller.param.ConsumerStoreParam;
 import com.example.nft.dao.CarMapper;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class CarServiceImpl implements CarService {
+public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements CarService {
 
 
     @Resource
@@ -45,7 +46,7 @@ public class CarServiceImpl implements CarService {
             throw new InsertException(ServiceResultEnum.DB_EXIST.getResult());
         }
         // 插入操作
-        if(!carMapper.insert(car)){
+        if(carMapper.insert(car) == 0){
             throw new InsertException(ServiceResultEnum.DB_INSERT_ERROR.getResult());
         }
         return ServiceResultEnum.SUCCESS.getResult();

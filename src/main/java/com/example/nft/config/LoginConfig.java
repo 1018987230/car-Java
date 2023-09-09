@@ -21,7 +21,8 @@ public class LoginConfig implements WebMvcConfigurer {
                 "/api/consumer/wx/**",
                 "/api/consumer/wx/getToken/**",
                 "/api/store/**",  // 暂时这样，后面新建主端后取消
-                "/api/operator/add"
+                "/api/operator/add",
+                "/api/consumer/login"
         );
     }
 }

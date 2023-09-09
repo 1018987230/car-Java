@@ -8,6 +8,8 @@ import java.io.Serializable;
 @Data
 public class ConsumerStoreParam implements Serializable {
 
+    private String phone;
+
     private String consumerUuid;
 
     private String storeUuid;

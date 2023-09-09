@@ -1,5 +1,6 @@
 package com.example.nft.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.nft.entity.Car;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public interface CarService {
+public interface CarService extends IService<Car> {
 
     String add (Car car);
 

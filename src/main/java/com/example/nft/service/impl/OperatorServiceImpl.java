@@ -18,6 +18,7 @@ import com.example.nft.utils.RedisUtil;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class OperatorServiceImpl implements OperatorService {
     @Resource
     private StoreSettingService storeSettingService;
 
+    @Transactional
     @Override
     public String add(Operator operator) {
         // 根据操作员所属店铺和手机号查询是否存在此人

@@ -30,8 +30,8 @@ public class ConsumerBalanceController extends BaseController{
 
     @PostMapping("/money/change")
     public Result moneyChange(@RequestBody BalanceParam balanceParam){
-        ConsumerBalance result = consumerBalanceService.moneyChange(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid(), balanceParam.getCostMoney());
 
+        ConsumerBalance result = consumerBalanceService.moneyChange(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid(), balanceParam.getCostMoney());
         return ResultGenerator.genSuccessResult(result);
     }
 

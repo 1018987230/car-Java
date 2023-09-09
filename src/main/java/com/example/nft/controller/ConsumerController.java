@@ -2,10 +2,7 @@ package com.example.nft.controller;
 
 
 import com.example.nft.commons.ServiceResultEnum;
-import com.example.nft.controller.param.ConsumerParam;
-import com.example.nft.controller.param.LoginParam;
-import com.example.nft.controller.param.PageParam;
-import com.example.nft.controller.param.PasswordParam;
+import com.example.nft.controller.param.*;
 import com.example.nft.entity.Consumer;
 import com.example.nft.entity.OpenidPhone;
 import com.example.nft.service.ConsumerService;
@@ -17,7 +14,6 @@ import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +52,7 @@ public class ConsumerController extends BaseController {
         if(!result.equals("success")){
             return ResultGenerator.genFailResult(500, result);
         }
+
         return ResultGenerator.genSuccessResult(result);
     }
 
@@ -93,8 +90,6 @@ public class ConsumerController extends BaseController {
         redisUtil.set(phone,token,60*60*24);
         return ResultGenerator.genSuccessResult(token);
     }
-
-
 
 
     @PostMapping("/status/change")

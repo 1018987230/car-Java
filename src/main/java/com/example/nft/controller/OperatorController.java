@@ -2,8 +2,12 @@ package com.example.nft.controller;
 
 import com.example.nft.commons.AgentThreadLocal;
 import com.example.nft.controller.param.OperatorParam;
+import com.example.nft.entity.Consumer;
 import com.example.nft.entity.Operator;
+import com.example.nft.service.ConsumerService;
+import com.example.nft.service.ConsumerStoreService;
 import com.example.nft.service.OperatorService;
+import com.example.nft.service.ex.SelectException;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +31,24 @@ public class OperatorController extends BaseController{
     @Resource
     private OperatorService operatorService;
 
+    @Resource
+    private ConsumerService consumerService;
+
+    @Resource
+    private ConsumerStoreService consumerStoreService;
+
     @PostMapping("/add")
     public Result add(@RequestBody Operator operator){
-        System.out.println(operator);
+
+        Consumer consumer = consumerService.findByPhone(operator.getOperatorPhone());
+        if(consumer == null){
+            throw new SelectException("注册管理员，请先加入会员！");
+        }
 
         String result = operatorService.add(operator);
+
+        // 联系上店铺
+        consumerStoreService.ConsumerAndStore(consumer.getConsumerUuid(), operator.getOperatorBelong());
 
         return ResultGenerator.genSuccessResult(result);
     }

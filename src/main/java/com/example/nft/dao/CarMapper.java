@@ -1,14 +1,15 @@
 package com.example.nft.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.nft.entity.Car;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface CarMapper {
+public interface CarMapper extends BaseMapper<Car> {
 
-    Boolean insert (Car car);
+    int insert (Car car);
 
     Boolean deleteByNumber(String carNumber);
 
