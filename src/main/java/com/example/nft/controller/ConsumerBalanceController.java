@@ -4,7 +4,9 @@ import com.example.nft.controller.param.BalanceParam;
 import com.example.nft.controller.param.PageParam;
 import com.example.nft.dao.ConsumerMapper;
 import com.example.nft.entity.ConsumerBalance;
+import com.example.nft.entity.Notice;
 import com.example.nft.service.ConsumerBalanceService;
+import com.example.nft.service.NoticeService;
 import com.example.nft.utils.Result;
 import com.example.nft.utils.ResultGenerator;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,9 @@ public class ConsumerBalanceController extends BaseController{
 
     @Resource
     private ConsumerMapper consumerMapper;
+
+    @Resource
+    private NoticeService noticeService;
 
     @PostMapping("/money/change")
     public Result moneyChange(@RequestBody BalanceParam balanceParam){
@@ -69,6 +74,11 @@ public class ConsumerBalanceController extends BaseController{
 
         result = consumerBalanceService.change(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid() ,balanceParam.getCostMoney(), balanceParam.getCostService1(), balanceParam.getCostService2(),
                 balanceParam.getCostService3(),balanceParam.getCostService4(),balanceParam.getCostService5());
+
+
+
+
+
         return ResultGenerator.genSuccessResult(result);
     }
 
