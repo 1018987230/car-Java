@@ -205,12 +205,12 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
      * @return
      */
     @Override
-    public ArrayList<Object> findOne(String balanceOwnerPhone, String storeUuid){
+    public ArrayList<ConsumerBalance> findOne(String balanceOwnerPhone, String storeUuid){
         ConsumerBalance dbRes = consumerBalanceMapper.selectByPhoneStore(storeUuid, balanceOwnerPhone,NORMAL_BALANCE_STATUS);
         if(dbRes == null){
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
-        ArrayList<Object> list = new ArrayList<>();
+        ArrayList<ConsumerBalance> list = new ArrayList<>();
         list.add(dbRes);
         return list;
     }

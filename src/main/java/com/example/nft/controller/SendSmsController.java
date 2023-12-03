@@ -45,7 +45,7 @@ public class SendSmsController {
             HashMap<String, Object> map = new HashMap<>();
             map.put("code", code);
             //调用方法发送信息 传入电话，模板，验证码
-            boolean send = sendSms.addSendSms(phone, "SMS_205128031", map);
+            boolean send = sendSms.addSendSms(phone,  map);
 
             //返回ture则发送成功
             if (send) {
@@ -57,5 +57,17 @@ public class SendSmsController {
                 return ResultGenerator.genFailResult("验证码生成错误！");
             }
         }
+    }
+
+    @GetMapping("/sms/notice/{phone}")
+    public Result sendNoticeSms(@PathVariable("phone") String phone) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("date", "2022-11-11 10:10:10");
+        map.put("store", "宜城市牧车人汽车服务中心");
+        map.put("service", " 洗车 ");
+        //调用方法发送信息 传入电话，模板，验证码
+        boolean send = sendSms.addSendSms(phone,  map);
+        return  ResultGenerator.genSuccessResult("success");
     }
 }

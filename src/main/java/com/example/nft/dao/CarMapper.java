@@ -15,6 +15,8 @@ public interface CarMapper extends BaseMapper<Car> {
 
     Integer updateByNumber (Car car);
 
+    Integer updateByCarId (Car car);
+
     List<Car> selectByPhone(String carOwnerPhone);
 
     Car selectByNumber(String carNumber);
@@ -22,4 +24,6 @@ public interface CarMapper extends BaseMapper<Car> {
     List<Car> selectByStore( String storeUuid, Integer currentPage);
 
     Integer selectCount(String storeUuid);
+
+    Car selectByCarId(Integer carId);
 }

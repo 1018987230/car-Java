@@ -31,6 +31,12 @@
                     WHERE car_number=#{carNumber}
     </update>
 
+    <update id="updateByCarId" parameterType="com.example.nft.entity.Car" >
+        UPDATE t_car SET car_type=#{carType},car_number=#{carNumber},car_config_1=#{carConfig1},car_config_2=#{carConfig2},
+                         car_config_3=#{carConfig3},car_config_4=#{carConfig4},car_config_5=#{carConfig5}
+        WHERE car_id=#{carId}
+    </update>
+
     <select id="selectByPhone" resultMap="BaseResultMap">
         SELECT * FROM t_car WHERE car_owner_phone=#{carOwnerPhone} order by car_id desc
     </select>
@@ -51,6 +57,9 @@
         where car_owner_phone
                   in (select consumer_phone from t_consumer where consumer_uuid
                                                                       in (select consumer_uuid from t_consumer_store where store_uuid = #{storeUuid}))
+    </select>
+    <select id="selectByCarId" resultType="com.example.nft.entity.Car">
+        select  * from t_car where car_id=#{carId}
     </select>
 
 </mapper>

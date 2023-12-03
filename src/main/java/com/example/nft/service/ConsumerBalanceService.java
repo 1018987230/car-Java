@@ -55,7 +55,7 @@ public interface ConsumerBalanceService {
      * @param storeUuid
      * @return
      */
-    ArrayList<Object> findOne(String balanceOwnerPhone, String storeUuid);
+    ArrayList<ConsumerBalance> findOne(String balanceOwnerPhone, String storeUuid);
 
     HashMap<Object, Object> findMany(String storeUuid , Integer currentPage);
 

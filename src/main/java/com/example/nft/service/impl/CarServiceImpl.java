@@ -1,8 +1,9 @@
 package com.example.nft.service.impl;
 
+import com.aliyun.ocr_api20210707.models.RecognizeCarNumberRequest;
+import com.aliyun.ocr_api20210707.models.RecognizeCarNumberResponse;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.nft.commons.ServiceResultEnum;
-import com.example.nft.controller.param.ConsumerStoreParam;
 import com.example.nft.dao.CarMapper;
 import com.example.nft.dao.ConsumerMapper;
 import com.example.nft.dao.ConsumerStoreMapper;
@@ -15,13 +16,18 @@ import com.example.nft.service.ex.SelectException;
 import com.example.nft.service.ex.UpdateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.aliyun.tea.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements CarService {
+
+
 
 
     @Resource
@@ -42,13 +48,19 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements CarSe
     @Override
     public String add(Car car) {
         // 根据carNumber判断车辆是否存在
-        if(carMapper.selectByNumber(car.getCarNumber()) != null){
-            throw new InsertException(ServiceResultEnum.DB_EXIST.getResult());
+        System.out.println(carMapper.selectById(car.getCarId()));
+        if(carMapper.selectByCarId(car.getCarId()) != null){
+            // 执行更改操作
+            Integer dbRes = carMapper.updateByCarId(car);
+//            throw new InsertException(ServiceResultEnum.DB_EXIST.getResult());
+        }else{
+            // 插入操作
+            if(carMapper.insert(car) == 0){
+                throw new InsertException(ServiceResultEnum.DB_INSERT_ERROR.getResult());
+            }
         }
-        // 插入操作
-        if(carMapper.insert(car) == 0){
-            throw new InsertException(ServiceResultEnum.DB_INSERT_ERROR.getResult());
-        }
+
+
         return ServiceResultEnum.SUCCESS.getResult();
     }
 
@@ -84,7 +96,7 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements CarSe
             throw new InsertException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
         // 更新操作
-        System.out.println(car);
+
         Integer dbRes = carMapper.updateByNumber(car);
         if(dbRes == 0){
             throw new UpdateException(ServiceResultEnum.DB_UPDATE_ERROR.getResult());
@@ -103,7 +115,11 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements CarSe
     @Override
     public Car findByNumber(String storeUuid, String carNumber) {
         Car car = carMapper.selectByNumber(carNumber);
+        if(car == null){
+            throw new SelectException("车辆未加入当前店铺！");
+        }
         Consumer consumer = consumerMapper.selectByPhone(car.getCarOwnerPhone());
+
 
         // 如果传进来的有店铺，则是店铺操作，要判断用户和店铺是否存在关系
         if(storeUuid != null && !storeUuid.equals("")){
@@ -152,5 +168,45 @@ public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements CarSe
         map.put("sum", sum);
 
         return map;
+    }
+
+    @Override
+    public RecognizeCarNumberResponse recognize(MultipartFile img) throws Exception {
+
+        com.aliyun.ocr_api20210707.Client client = createClient(System.getenv("LTAI5tF9AbG4ojYnT1KYiTRb"), System.getenv("IlIdi1PgKP0VxiX5HoN033lf5V389r"));
+        com.aliyun.ocr_api20210707.models.RecognizeCarNumberRequest recognizeCarNumberRequest = new com.aliyun.ocr_api20210707.models.RecognizeCarNumberRequest();
+        final RecognizeCarNumberRequest recognizeCarNumberRequest1 = recognizeCarNumberRequest.setBody(img.getInputStream());
+        com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
+        try {
+            // 复制代码运行请自行打印 API 的返回值
+            RecognizeCarNumberResponse recognizeCarNumberResponse = client.recognizeCarNumberWithOptions(recognizeCarNumberRequest, runtime);
+            System.out.println(recognizeCarNumberRequest.getBody());
+            return recognizeCarNumberResponse;
+        } catch (TeaException error) {
+            // 错误 message
+            System.out.println(error.getMessage());
+            // 诊断地址
+            System.out.println(error.getData().get("Recommend"));
+            com.aliyun.teautil.Common.assertAsString(error.message);
+        } catch (Exception _error) {
+            TeaException error = new TeaException(_error.getMessage(), _error);
+            // 错误 message
+            System.out.println(error.getMessage());
+            // 诊断地址
+            System.out.println(error.getData().get("Recommend"));
+            com.aliyun.teautil.Common.assertAsString(error.message);
+        }
+        return null;
+    }
+
+    public static com.aliyun.ocr_api20210707.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
+        com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
+                // 必填，您的 AccessKey ID
+                .setAccessKeyId("LTAI5tF9AbG4ojYnT1KYiTRb")
+                // 必填，您的 AccessKey Secret
+                .setAccessKeySecret("IlIdi1PgKP0VxiX5HoN033lf5V389r");
+        // Endpoint 请参考 https://api.aliyun.com/product/ocr-api
+        config.endpoint = "ocr-api.cn-hangzhou.aliyuncs.com";
+        return new com.aliyun.ocr_api20210707.Client(config);
     }
 }

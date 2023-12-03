@@ -12,5 +12,5 @@ import java.util.Map;
  */
 public interface SendSms {
 
-    boolean addSendSms(String PhoneNumber, String TemplateCode, Map code);
+    boolean addSendSms(String PhoneNumber, Map code);
 }

@@ -1,8 +1,10 @@
 package com.example.nft.service;
 
+import com.aliyun.ocr_api20210707.models.RecognizeCarNumberResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.nft.entity.Car;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +18,11 @@ public interface CarService extends IService<Car> {
 
     String changeByNumber(Car car);
 
-    Car findByNumber(String storeUuid,String carNumber);
+    Car findByNumber(String storeUuid, String carNumber);
 
-    List<Car> findByPhone(String storeUuid,String carOwnerPhone);
+    List<Car> findByPhone(String storeUuid, String carOwnerPhone);
 
     HashMap<String,Object> findByStore(String storeUuid, Integer currentPage);
 
+    RecognizeCarNumberResponse recognize(MultipartFile file) throws Exception;
 }
