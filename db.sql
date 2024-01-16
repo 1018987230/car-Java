@@ -198,7 +198,7 @@ CREATE TABLE `t_balance_log`(
 -- CREATE TABLE `t_order`(
 --     `order_id` int NOT NULL AUTO_INCREMENT COMMENT '订单序号',
 --     `order_num` varchar(50) NOT NULL COMMENT '订单号',
---     `order_sponsor_phone` varchar(50) NOT NULL COMMENT '订单发起人手机号',
+--     `order_sponsor_phone` varchar (50) NOT NULL COMMENT '订单发起人手机号',
 --     `order_sponsor_name` varchar (50) NOT NULL COMMENT '订单发起人姓名',
 --     `order_service` varchar (50) NOT NUll COMMENT '需要的服务',
 --     `order_desc` varchar (128) DEFAULT '' COMMENT '情况描述',
