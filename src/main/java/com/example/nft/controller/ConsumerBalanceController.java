@@ -57,7 +57,7 @@ public class ConsumerBalanceController extends BaseController{
 
     @PostMapping("/findOne")
     public Result findOne(@RequestBody BalanceParam balanceParam){
-        ArrayList<ConsumerBalance> result = consumerBalanceService.findOne(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid());
+        List<ConsumerBalance> result = consumerBalanceService.findOne(balanceParam.getBalanceOwnerPhone(), balanceParam.getStoreUuid());
         return ResultGenerator.genSuccessResult(result);
     }
 
