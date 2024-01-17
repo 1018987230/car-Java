@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 public class AdminController extends BaseController{
 
     @Resource
-    private AdminService adminServicesss;
+    private AdminService adminServicecc;
 
     /**
      * 注册接口
