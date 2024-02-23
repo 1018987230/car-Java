@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>NFT</artifactId>
+    <artifactId>Car</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>NFT</name>
     <description>Demo project for Spring Boot</description>
@@ -118,6 +118,13 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>3.8.2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>4.6.0</version>
         </dependency>
         <!--阿里云短信服务-->
 <!--        <dependency>-->

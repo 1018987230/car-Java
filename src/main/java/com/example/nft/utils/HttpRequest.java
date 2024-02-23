@@ -1,5 +1,7 @@
 package com.example.nft.utils;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.io.*;
@@ -70,7 +72,7 @@ public class HttpRequest {
      *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
      * @return 所代表远程资源的响应结果
      */
-    public static String sendPost(String url, String param, String keyValue) {
+    public static String sendPost(String url, JSONObject param, String keyValue) {
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
@@ -79,9 +81,11 @@ public class HttpRequest {
             // 打开和URL之间的连接
             URLConnection conn = realUrl.openConnection();
             // 设置通用的请求属性
+
+            conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("api-key", keyValue);
+//            conn.setRequestProperty("api-key", keyValue);
             conn.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             conn.setRequestProperty("Accept-Charset", "UTF-8");

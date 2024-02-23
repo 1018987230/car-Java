@@ -5,6 +5,7 @@ import com.example.nft.utils.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -63,5 +64,44 @@ public class WxLoginController {
         return ResultGenerator.genSuccessResult(map);
     }
 
-}
+    @GetMapping("/sendMessage")
+    public Result sendMessage(@RequestParam("openid") String openid,
+                              @RequestParam("template_id") String template_id){
 
+        String wxspAppid = "wx30daae2411af79a8";
+        //小程序的 app secret (在微信小程序管理后台获取)
+        String wxspSecret = "d488b91cba5ffce6d8febda4f388e433";
+
+        String tokenUrl = "https://api.weixin.qq.com/cgi-bin/token";
+        String params = "grant_type=client_credential&appid=" + wxspAppid + "&secret=" + wxspSecret;
+        String result = HttpRequest.sendGet(tokenUrl, params);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        String token = jsonObject.get("access_token").toString();
+
+        String msgUrl = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send";
+        String params2 = "?access_token="+ token;
+        JSONObject paramMap = new JSONObject();
+        paramMap.put("touser", openid);
+        paramMap.put("template_id", "fw4UwYL8cbJeVUthVYQ4nGnYuzk51U8HubcSTR4AUl8");
+        paramMap.put("page","/pages/login");
+
+
+        JSONObject data = new JSONObject();
+
+        JSONObject thing1 = new JSONObject();
+        thing1.put("value","你好");
+        JSONObject name3 = new JSONObject();
+        name3.put("value","王游戏");
+
+        data.put("thing1", thing1);
+        data.put("name3", name3);
+
+        paramMap.put("data",data);
+        System.out.println(paramMap);
+
+        String post = HttpRequest.sendPost(msgUrl + params2, paramMap, "");
+        System.out.println(post);
+        return ResultGenerator.genSuccessResult();
+    }
+
+}
