@@ -83,19 +83,7 @@ public class ConsumerBalanceController extends BaseController{
         result = consumerBalanceService.change(phone, balanceParam.getStoreUuid() ,balanceParam.getCostMoney(), balanceParam.getCostService1(), balanceParam.getCostService2(),
                 balanceParam.getCostService3(),balanceParam.getCostService4(),balanceParam.getCostService5());
 
-        if(result.equals("success")){
-            HashMap<String, Object> map = new HashMap<>();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String formattedDateTime = LocalDateTime.now().format(formatter);
-            String message = "详情：【余额变动】：" + balanceParam.getCostMoney() + "元，"+"【洗车次数】：" + balanceParam.getCostService1() +"次，"
-                    + "【其他】：" + balanceParam.getCostService2() +"次";
 
-            map.put("date", formattedDateTime);
-            map.put("store", "宜城市牧车人汽车服务中心");
-            map.put("service", message);
-            //调用方法发送信息 传入电话，模板，验证码
-            boolean send = sendSms.addSendSms(phone,  map);
-        }
         return ResultGenerator.genSuccessResult(result);
     }
 

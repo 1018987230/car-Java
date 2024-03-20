@@ -41,4 +41,9 @@ public class OpenidPhoneServiceImpl implements OpenidPhoneService {
         }
         return openidPhoneMapper.selectByOpenid(openid);
     }
+
+    @Override
+    public OpenidPhone findByPhone(String phone) {
+        return openidPhoneMapper.selectByPhone(phone);
+    }
 }

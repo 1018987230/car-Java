@@ -5,7 +5,9 @@ import com.example.nft.commons.ServiceResultEnum;
 import com.example.nft.controller.param.*;
 import com.example.nft.entity.Consumer;
 import com.example.nft.entity.OpenidPhone;
+import com.example.nft.entity.Store;
 import com.example.nft.service.ConsumerService;
+import com.example.nft.service.ConsumerStoreService;
 import com.example.nft.service.OpenidPhoneService;
 import com.example.nft.service.ex.SelectException;
 import com.example.nft.utils.JwtUtil;
@@ -31,6 +33,9 @@ public class ConsumerController extends BaseController {
 
     @Resource
     private OpenidPhoneService openidPhoneService;
+
+    @Resource
+    private ConsumerStoreService consumerStoreService;
 
 
     @Resource
@@ -158,6 +163,8 @@ public class ConsumerController extends BaseController {
         if(result == null){
             return ResultGenerator.genSuccessResult(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
+        HashMap<String, Object> map = consumerStoreService.findStoreByConsumerUuid(result.getConsumerUuid());
+        result.setStores((List<Store>) map.get("info"));
         return ResultGenerator.genSuccessResult(result);
     }
 

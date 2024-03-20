@@ -1,4 +1,4 @@
-scp -r /home/wyx/下载/Car_VX/car_admin/target/NFT-0.0.1-SNAPSHOT.jar ssh root@120.76.176.54:/home/wyx/car
+scp -r /home/wyx/下载/Car_VX/car_admin/target/NFT-0.0.1-SNAPSHOT.jar ssh root@47.119.28.231:/home/wyx/car
 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
 
 2022-10-30

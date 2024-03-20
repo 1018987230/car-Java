@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.nft.dao.ChargeOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.nft.entity.ChargeOrder">
+        <id column="id" property="id" />
+        <result column="consumer_id" property="consumerId" />
+        <result column="store_id" property="storeId" />
+        <result column="transaction_id" property="transactionId" />
+        <result column="charge_money_amount" property="chargeMoneyAmount" />
+        <result column="charge_service_name" property="chargeServiceName" />
+        <result column="charge_service_amount" property="chargeServiceAmount" />
+        <result column="note" property="note" />
+        <result column="status" property="status" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, consumer_id, transaction_id, charge_money_amount, charge_service_name, charge_service_amount, note, status, update_time, create_time
+    </sql>
+
+</mapper>

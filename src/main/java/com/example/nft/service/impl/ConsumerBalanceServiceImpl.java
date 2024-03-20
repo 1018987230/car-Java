@@ -12,6 +12,7 @@ import com.example.nft.entity.Notice;
 import com.example.nft.entity.StoreSetting;
 import com.example.nft.service.ConsumerBalanceService;
 import com.example.nft.service.ConsumerService;
+import com.example.nft.service.SendSms;
 import com.example.nft.service.StoreSettingService;
 import com.example.nft.service.ex.BalanceException;
 import com.example.nft.service.ex.InsertException;
@@ -20,6 +21,8 @@ import com.example.nft.service.ex.UpdateException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,6 +43,9 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
 
     @Resource
     private NoticeMapper noticeMapper;
+
+    @Resource
+    private SendSms sendSms;
 
     @Resource
     private StoreSettingService storeSettingService;
@@ -107,6 +113,22 @@ public class ConsumerBalanceServiceImpl implements ConsumerBalanceService {
         notice.setNoticeTitle("余额消息");
         notice.setNoticeContent("手机号："+consumer.getConsumerPhone()+"的账户发生变化。"+ content);
         noticeMapper.insertNotice(notice);
+
+
+        ConsumerBalance curBalance = consumerBalanceMapper.selectByPhoneStore(storeUuid,consumer.getConsumerPhone(), 0);
+
+        HashMap<String, Object> map = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = LocalDateTime.now().format(formatter);
+        String message = "账户详情：【余额】：" + curBalance.getBalanceMoney() + "元，"+"【洗车次数】：" + curBalance.getBalanceService1() +"次，"
+                + "【其他】：" + curBalance.getBalanceService2() +"次";
+
+        map.put("date", formattedDateTime);
+        map.put("store", "宜城市牧车人汽车服务中心");
+        map.put("service", message);
+        //调用方法发送信息 传入电话，模板，验证码
+        sendSms.addSendSms(balanceOwnerPhone,  map);
+
 
         return ServiceResultEnum.SUCCESS.getResult();
     }

@@ -1,7 +1,12 @@
 package com.example.nft.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.nft.entity.Consumer;
+import com.example.nft.entity.OpenidPhone;
+import com.example.nft.service.ConsumerService;
+import com.example.nft.service.OpenidPhoneService;
 import com.example.nft.utils.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +29,12 @@ public class WxLoginController {
     @Resource
     private RedisUtil redisUtil;
 
+    @Autowired
+    private ConsumerService consumerService;
+
+    @Autowired
+    private OpenidPhoneService openidPhoneService;
+
     /**
      * 微信登录获取openid，但不是服务器登录
      * @param code
@@ -31,7 +42,6 @@ public class WxLoginController {
      */
     @GetMapping("/login")
     public Result login(@RequestParam("code") String code){
-
 
         String wxspAppid = "wx30daae2411af79a8";
         //小程序的 app secret (在微信小程序管理后台获取)
@@ -64,44 +74,68 @@ public class WxLoginController {
         return ResultGenerator.genSuccessResult(map);
     }
 
-    @GetMapping("/sendMessage")
-    public Result sendMessage(@RequestParam("openid") String openid,
-                              @RequestParam("template_id") String template_id){
+
+    @GetMapping("/getPhoneNumber")
+    public Result getPhoneNumber(@RequestParam("code") String code,
+                                 @RequestParam("openid") String openid){
 
         String wxspAppid = "wx30daae2411af79a8";
         //小程序的 app secret (在微信小程序管理后台获取)
         String wxspSecret = "d488b91cba5ffce6d8febda4f388e433";
-
         String tokenUrl = "https://api.weixin.qq.com/cgi-bin/token";
         String params = "grant_type=client_credential&appid=" + wxspAppid + "&secret=" + wxspSecret;
         String result = HttpRequest.sendGet(tokenUrl, params);
         JSONObject jsonObject = JSONObject.parseObject(result);
         String token = jsonObject.get("access_token").toString();
 
+
+        JSONObject paramMap = new JSONObject();
+        paramMap.put("code", code);
+        String sr2 = HttpRequest.sendPost("https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token="+token,paramMap,"");
+
+        JSONObject json2 =JSON.parseObject(sr2);
+        String phoneNumber =  JSON.parseObject(json2.get("phone_info").toString()).get("phoneNumber").toString();
+        // auto register user
+        if(consumerService.findByPhone(phoneNumber) == null){
+            String s = consumerService.add(phoneNumber, "123456", "12345678");
+
+            OpenidPhone entity = new OpenidPhone();
+            entity.setPhone(phoneNumber);
+            entity.setOpenid(openid);
+            openidPhoneService.add(entity);
+        }
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("consumerPhone",phoneNumber);
+        return ResultGenerator.genSuccessResult(map);
+    }
+
+    @GetMapping("/sendMessage")
+    public Result sendMessage(@RequestParam("openid") String openid){
+
+        String wxspAppid = "wx30daae2411af79a8";
+        //小程序的 app secret (在微信小程序管理后台获取)
+        String wxspSecret = "d488b91cba5ffce6d8febda4f388e433";
+        String tokenUrl = "https://api.weixin.qq.com/cgi-bin/token";
+        String params = "grant_type=client_credential&appid=" + wxspAppid + "&secret=" + wxspSecret;
+        String result = HttpRequest.sendGet(tokenUrl, params);
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        String token = jsonObject.get("access_token").toString();
         String msgUrl = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send";
         String params2 = "?access_token="+ token;
         JSONObject paramMap = new JSONObject();
         paramMap.put("touser", openid);
         paramMap.put("template_id", "fw4UwYL8cbJeVUthVYQ4nGnYuzk51U8HubcSTR4AUl8");
         paramMap.put("page","/pages/login");
-
-
         JSONObject data = new JSONObject();
-
         JSONObject thing1 = new JSONObject();
         thing1.put("value","你好");
         JSONObject name3 = new JSONObject();
         name3.put("value","王游戏");
-
         data.put("thing1", thing1);
         data.put("name3", name3);
-
         paramMap.put("data",data);
-        System.out.println(paramMap);
-
         String post = HttpRequest.sendPost(msgUrl + params2, paramMap, "");
-        System.out.println(post);
         return ResultGenerator.genSuccessResult();
     }
-
 }

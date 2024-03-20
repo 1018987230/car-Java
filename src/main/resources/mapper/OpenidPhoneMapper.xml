@@ -18,5 +18,11 @@
         SELECT * FROM t_openid_phone WHERE openid=#{openid}
     </select>
 
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        SELECT * FROM t_openid_phone WHERE phone=#{phone}
+    </select>
+
+
+
 
 </mapper>

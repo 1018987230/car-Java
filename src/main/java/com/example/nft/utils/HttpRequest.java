@@ -1,6 +1,7 @@
 package com.example.nft.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.dom4j.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -89,6 +90,9 @@ public class HttpRequest {
             conn.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             conn.setRequestProperty("Accept-Charset", "UTF-8");
+            if(!keyValue.equals("")){
+                conn.setRequestProperty("Wechatpay-Serial", keyValue);
+            }
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);

@@ -16,4 +16,6 @@ public interface OpenidPhoneService {
     String add(OpenidPhone openidPhone);
 
     OpenidPhone findByOpenId(String openid);
+
+    OpenidPhone findByPhone(String phone);
 }

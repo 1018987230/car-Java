@@ -1,4 +1,12 @@
 spring:
   profiles:
-    active: dev
-
+    active: prd
+wx:
+  pay:
+    appId: wx30daae2411af79a8
+    mchId: 1666813290 #商户id
+    mchKey: sadhajkfhjkadshfkjahdfkjjhkjdS12
+    apiV3Key: sadhajkfhjkadshfkjahdfkjjhkjdS12
+    keyPath: /home/wyx/Downloads/1666813290_20240302_cert/apiclient_cert.p12 # p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
+    privateKeyPath: /home/wyx/Downloads/1666813290_20240302_cert/apiclient_key.pem #apiclient_key.pem证书文件的绝对路径或者以classpath:开头的类路径
+    privateCertPath: /home/wyx/Downloads/1666813290_20240302_cert/apiclient_cert.pem #apiclient_cert.pem证书文件的绝对路径或者以classpath:开头的类路径

@@ -31,4 +31,6 @@ public interface ConsumerService {
     Consumer findByPhone(String consumerPhone);
 
     Consumer findByNumber(String carNumber);
+
+    Consumer findByUuid(String uuid);
 }

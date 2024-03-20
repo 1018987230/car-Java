@@ -294,8 +294,8 @@ public class ConsumerServiceImpl implements ConsumerService {
      */
     @Override
     public Consumer findByPhone(String consumerPhone) {
-        if(consumerMapper.selectByPhone(consumerPhone) ==null){
-            throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
+        if(consumerMapper.selectByPhone(consumerPhone) == null){
+            return null;
         }
         return consumerMapper.selectByPhone(consumerPhone);
     }
@@ -318,5 +318,11 @@ public class ConsumerServiceImpl implements ConsumerService {
             throw new SelectException(ServiceResultEnum.DB_NOT_EXIST.getResult());
         }
         return db_consumer;
+    }
+
+    @Override
+    public Consumer findByUuid(String uuid) {
+
+        return consumerMapper.selectByUuid(uuid);
     }
 }

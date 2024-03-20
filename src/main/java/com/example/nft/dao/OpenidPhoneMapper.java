@@ -27,4 +27,6 @@ public interface OpenidPhoneMapper {
      * @return
      */
     OpenidPhone selectByOpenid(String openid);
+
+    OpenidPhone selectByPhone(String phone);
 }

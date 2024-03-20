@@ -249,6 +249,49 @@ CREATE TABLE `t_consumer_log`(
 ) ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 
+--  充值订单表
+DROP table IF EXISTS `t_charge_order`;
+CREATE TABLE `t_charge_order`(
+    `id` varchar(30) NOT NULL  COMMENT '充值订单id',
+    `consumer_id` varchar(30) NOT NULL COMMENT '充值用户',
+    `store_id` varchar(30) NOT NULL COMMENT '充值店铺',
+    `transaction_id` varchar(30) DEFAULT  '' COMMENT '微信订单号',
+    `charge_money_amount` int NOT NULL DEFAULT  0 COMMENT '充值金额',
+    `charge_service_name` varchar(30) DEFAULT '' COMMENT '充值服务名称',
+    `charge_service_amount` varchar(30) DEFAULT '' COMMENT '充值服务次数',
+    `note` varchar(255) DEFAULT '' COMMENT 'eg,充值500赠送300，充值金额为800',
+    `status` int NOT NULL DEFAULT 0 COMMENT '订单状态 0-待支付 1-已取消 2-已支付 3-已完成 4-退款中 5-已退款',
+    `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC;
 
 
+-- 活动表
+CREATE TABLE `t_charge_activity`(
+     `id` varchar(30) NOT NULL  COMMENT '活动id',
+     `store_id` varchar(30) NOT NULL COMMENT '哪个店铺开启',
+     `charge_money_limit` int NOT NULL DEFAULT  0 COMMENT '充值金额限制',
+     `gift_money` int NOT NULL DEFAULT  0 COMMENT '赠送金额',
+     `charge_service_name` varchar(30) DEFAULT '' COMMENT '充值服务名称',
+     `charge_service_limit` varchar(30) DEFAULT '' COMMENT '充值服务次数限制',
+     `gift_service` varchar(30) DEFAULT '' COMMENT '充值服务次数限制',
+     `note` varchar(255) DEFAULT '' COMMENT 'eg,充值500赠送300，充值金额为800',
+     `status` int NOT NULL DEFAULT 0 COMMENT '状态 0-正常 1-停止 2-取消 ',
+     `start_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '开始时间',
+     `end_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '结束时间',
+     `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '创建时间',
+     PRIMARY KEY (`id`)
+)ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC COMMENT='充值活动表';
+
+
+-- 充值活动参与表
+DROP table IF  EXISTS `t_charge_activity_record`;
+CREATE TABLE `t_charge_activity_record` (
+    `id` varchar(30) NOT NULL  COMMENT '活动参与记录id',
+    `consumer_id` varchar(30) NOT NULL COMMENT '参与用户',
+    `activity_id` varchar(30) NOT NULL COMMENT '参与活动',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDb DEFAULT CHARSET=utf8 ROW_FORMAT = DYNAMIC COMMENT='充值活动参与表';
 
